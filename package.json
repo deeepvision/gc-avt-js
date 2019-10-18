@@ -1,0 +1,41 @@
+{
+  "name": "@deepvision/translatio.js",
+  "description": "Translatio JS",
+  "version": "0.0.1",
+  "author": "Sergii Sadovyi <s.sadovyi@deepvision.team>",
+  "contributors": [
+    "Vitaliy Angolenko <v.angolenko@deepvision.team>"
+  ],
+  "main": "lib/index.js",
+  "repository": {
+    "type": "git",
+    "url": "https://git.deepvision.team/translatio/translatio.js"
+  },
+  "scripts": {
+    "build": "tsc",
+    "build:watch": "tsc --watch",
+    "test": "jest --runInBand",
+    "lint": "eslint ./src/**/**/*.ts",
+    "fix": "eslint --fix ./src/**/**/*.ts"
+  },
+  "devDependencies": {
+    "typescript": "^3.5.3",
+    "@types/node": "^12.6.8",
+    "@types/jest": "^24.0.15",
+    "@deepvision/test-kit-jest": "^1.0.6",
+    "jest": "^24.8.0",
+    "ts-jest": "^24.0.2",
+    "eslint": "^6.1.0",
+    "@deepvision/eslint-config": "^6.1.9",
+    "@typescript-eslint/parser": "^2.0.0",
+    "@typescript-eslint/eslint-plugin": "^2.0.0"
+  },
+  "types": "lib/index.d.ts",
+  "files": [
+    "lib/**/*"
+  ],
+  "dependencies": {
+    "@deepvision/http-client": "^1.1.4",
+    "@deepvision/api-kit": "^1.0.6"
+  }
+}

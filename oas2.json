@@ -1,0 +1,429 @@
+{
+  "swagger": "2.0",
+  "info": {
+    "title": "SS+ API",
+    "version": "1.1",
+    "license": {
+      "name": "MIT"
+    },
+    "contact": {
+      "name": "Sergii Sadovyi",
+      "email": "s.sadovyi@deepvision.team"
+    },
+    "description": "Sabbath School API"
+  },
+  "host": "api.ss.deepvision.team",
+  "definitions": {
+    "m:group": {
+      "type": "object",
+      "title": "Group",
+      "additionalProperties": false,
+      "x-pcg": {
+        "rest-alias": "groups",
+        "pagination": true,
+        "sort": {
+          "default": "name.asc"
+        }
+      },
+      "properties": {
+        "id": {
+          "type": "string",
+          "minLength": 1,
+          "x-pcg": {
+            "generated": true
+          }
+        },
+        "name": {
+          "$ref": "#/definitions/sm:mlvalue",
+          "example": {
+            "en": "Group"
+          },
+          "x-pcg": {
+            "ml": true,
+            "searchable": true
+          }
+        }
+      }
+    },
+    "sm:page-meta": {
+      "type": "object",
+      "title": "Shared: Page Meta",
+      "properties": {
+        "total": {
+          "type": "number"
+        },
+        "limit": {
+          "type": "number"
+        },
+        "offset": {
+          "type": "number"
+        }
+      },
+      "required": [
+        "total"
+      ]
+    },
+    "sm:mlvalue": {
+      "type": [
+        "object",
+        "string"
+      ],
+      "title": "Shared: mlvalue",
+      "description": "Multilang string"
+    },
+    "sm:mldata": {
+      "type": "object",
+      "properties": {},
+      "title": "Shared: MLData",
+      "description": "Multilang object"
+    },
+    "sm:file": {
+      "type": "object",
+      "title": "Shared: File",
+      "additionalProperties": false,
+      "description": "File Model",
+      "properties": {
+        "id": {
+          "type": "string",
+          "minLength": 1,
+          "description": "File ID"
+        },
+        "name": {
+          "type": "string",
+          "minLength": 1,
+          "description": "File name"
+        },
+        "ext": {
+          "type": "string",
+          "minLength": 1,
+          "description": "File extension"
+        },
+        "url": {
+          "type": "string",
+          "description": "File URL on the server",
+          "format": "uri"
+        },
+        "size": {
+          "type": "number",
+          "description": "File size (bytes)"
+        },
+        "created": {
+          "type": "string",
+          "format": "date-time"
+        },
+        "modified": {
+          "type": "string",
+          "format": "date-time"
+        },
+        "mimeType": {
+          "type": "string",
+          "description": "Media type of File",
+          "pattern": "^.+\\/.+$"
+        },
+        "props": {
+          "type": "object",
+          "properties": {
+            "parentId": {
+              "type": "string",
+              "minLength": 1
+            },
+            "parentUrl": {
+              "type": "string",
+              "format": "uri"
+            },
+            "cropMask": {
+              "type": "string",
+              "minLength": 1
+            }
+          }
+        }
+      },
+      "required": [
+        "id",
+        "url",
+        "mimeType"
+      ]
+    },
+    "m:group-input": {
+      "type": "object",
+      "title": "Group (Input)",
+      "additionalProperties": false,
+      "properties": {
+        "name": {
+          "$ref": "#/definitions/sm:mldata"
+        }
+      }
+    },
+    "m:group-update-input": {
+      "type": "object",
+      "title": "Group (Update Input)",
+      "additionalProperties": false,
+      "properties": {
+        "name": {
+          "$ref": "#/definitions/sm:mldata"
+        }
+      }
+    }
+  },
+  "parameters": {
+    "limit": {
+      "name": "limit",
+      "in": "query",
+      "type": "integer",
+      "default": 10,
+      "maximum": 200,
+      "minimum": 1
+    },
+    "id": {
+      "name": "id",
+      "in": "path",
+      "type": "string",
+      "required": true,
+      "minLength": 1
+    },
+    "subid": {
+      "name": "subid",
+      "in": "path",
+      "type": "string",
+      "required": true,
+      "minLength": 1
+    },
+    "offset": {
+      "name": "offset",
+      "in": "query",
+      "type": "integer",
+      "minimum": 0,
+      "default": 0
+    },
+    "text": {
+      "name": "text",
+      "in": "query",
+      "type": "string",
+      "maxLength": 100
+    }
+  },
+  "schemes": [
+    "https"
+  ],
+  "consumes": [
+    "application/json"
+  ],
+  "produces": [
+    "application/json"
+  ],
+  "paths": {
+    "/groups/{id}": {
+      "get": {
+        "summary": "Get Group",
+        "operationId": "group:get",
+        "x-pcg": {
+          "model": "m:group",
+          "action": "get"
+        },
+        "parameters": [
+          {
+            "in": "query",
+            "name": "ml",
+            "type": "boolean"
+          },
+          {
+            "in": "header",
+            "name": "Accept-Language",
+            "type": "string"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "",
+            "schema": {
+              "$ref": "#/definitions/m:group"
+            }
+          },
+          "default": {
+            "description": ""
+          }
+        }
+      },
+      "put": {
+        "summary": "Update Group",
+        "operationId": "group:update",
+        "x-pcg": {
+          "model": "m:group",
+          "action": "update"
+        },
+        "parameters": [
+          {
+            "in": "body",
+            "name": "body",
+            "schema": {
+              "$ref": "#/definitions/m:group-update-input"
+            },
+            "x-examples": {
+              "application/json": {
+                "name": {
+                  "en": "Group"
+                }
+              }
+            }
+          },
+          {
+            "in": "query",
+            "name": "ml",
+            "type": "boolean",
+            "default": true
+          },
+          {
+            "in": "header",
+            "name": "Accept-Language",
+            "type": "string"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "",
+            "schema": {
+              "$ref": "#/definitions/m:group"
+            }
+          },
+          "default": {
+            "description": ""
+          }
+        }
+      },
+      "delete": {
+        "summary": "Delete Group",
+        "operationId": "group:delete",
+        "x-pcg": {
+          "model": "m:group",
+          "action": "delete"
+        },
+        "responses": {
+          "204": {
+            "description": "",
+            "schema": {
+              "type": "string"
+            }
+          },
+          "default": {
+            "description": ""
+          }
+        }
+      },
+      "parameters": [
+        {
+          "$ref": "#/parameters/id"
+        }
+      ]
+    },
+    "/groups": {
+      "get": {
+        "summary": "List Group",
+        "operationId": "group:list",
+        "x-pcg": {
+          "model": "m:group",
+          "action": "list"
+        },
+        "parameters": [
+          {
+            "$ref": "#/parameters/limit"
+          },
+          {
+            "$ref": "#/parameters/offset"
+          },
+          {
+            "in": "query",
+            "name": "sort",
+            "type": "string",
+            "default": "name.asc"
+          },
+          {
+            "$ref": "#/parameters/text"
+          },
+          {
+            "in": "query",
+            "name": "ml",
+            "type": "boolean"
+          },
+          {
+            "in": "header",
+            "name": "Accept-Language",
+            "type": "string"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "",
+            "schema": {
+              "type": "object",
+              "additionalProperties": false,
+              "properties": {
+                "groups": {
+                  "type": "array",
+                  "items": {
+                    "$ref": "#/definitions/m:group"
+                  }
+                },
+                "meta": {
+                  "$ref": "#/definitions/sm:page-meta"
+                }
+              },
+              "required": [
+                "groups",
+                "meta"
+              ]
+            }
+          },
+          "default": {
+            "description": ""
+          }
+        }
+      },
+      "post": {
+        "summary": "Create Group",
+        "operationId": "group:create",
+        "x-pcg": {
+          "model": "m:group",
+          "action": "create"
+        },
+        "parameters": [
+          {
+            "in": "body",
+            "name": "body",
+            "schema": {
+              "$ref": "#/definitions/m:group-input"
+            },
+            "x-examples": {
+              "application/json": {
+                "name": {
+                  "en": "Group"
+                }
+              }
+            }
+          },
+          {
+            "in": "query",
+            "name": "ml",
+            "type": "boolean",
+            "default": true
+          },
+          {
+            "in": "header",
+            "name": "Accept-Language",
+            "type": "string"
+          }
+        ],
+        "responses": {
+          "201": {
+            "description": "",
+            "schema": {
+              "$ref": "#/definitions/m:group"
+            }
+          },
+          "default": {
+            "description": ""
+          }
+        }
+      }
+    }
+  }
+}
