@@ -18,6 +18,10 @@
     "lint": "eslint ./src/**/**/*.ts",
     "fix": "eslint --fix ./src/**/**/*.ts"
   },
+  "dependencies": {
+    "@deepvision/http-client": "^1.1.4",
+    "@deepvision/api-kit": "^1.0.6"
+  },
   "devDependencies": {
     "typescript": "^3.5.3",
     "@types/node": "^12.6.8",
@@ -33,9 +37,5 @@
   "types": "lib/index.d.ts",
   "files": [
     "lib/**/*"
-  ],
-  "dependencies": {
-    "@deepvision/http-client": "^1.1.4",
-    "@deepvision/api-kit": "^1.0.6"
-  }
+  ]
 }

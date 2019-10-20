@@ -2,6 +2,7 @@ import { APIError } from '@deepvision/api-kit';
 import '@deepvision/test-kit-jest';
 import Translatio from '@/index';
 import Groups from '@/modules/groups';
+import Questions from '@/modules/questions';
 
 describe('Translatio', () => {
     test('must throw on missed "endpoint" argument', async () => {
@@ -13,5 +14,6 @@ describe('Translatio', () => {
         const translatio = new Translatio({ endpoint: 'https://translatio.test' });
 
         expect(translatio.groups).toBeInstanceOf(Groups);
+        expect(translatio.questions).toBeInstanceOf(Questions);
     });
 });

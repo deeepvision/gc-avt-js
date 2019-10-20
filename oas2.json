@@ -45,6 +45,83 @@
         }
       }
     },
+    "m:question": {
+      "type": "object",
+      "title": "Question",
+      "additionalProperties": false,
+      "x-pcg": {
+        "rest-alias": "questions",
+        "pagination": true,
+        "sort": {
+          "default": "text.asc"
+        },
+        "relations": {
+          "belongsTo": [
+            {
+              "model": "m:group",
+              "property": "group",
+              "as": "model"
+            }
+          ]
+        }
+      },
+      "properties": {
+        "id": {
+          "type": "string",
+          "minLength": 1,
+          "example": "{string:8}"
+        },
+        "text": {
+          "type": "string",
+          "minLength": 1,
+          "example": "{string:7}"
+        },
+        "reference": {
+          "type": "string",
+          "minLength": 1,
+          "example": "{string:7}"
+        },
+        "line": {
+          "type": "integer",
+          "minimum": 0,
+          "example": 2
+        },
+        "level": {
+          "type": "integer",
+          "minimum": 0,
+          "example": 2
+        },
+        "cleared": {
+          "type": "boolean",
+          "default": false
+        },
+        "group": {
+          "$ref": "#/definitions/m:group"
+        },
+        "answers": {
+          "type": "array",
+          "items": {
+            "$ref": "#/definitions/m:answers"
+          }
+        }
+      }
+    },
+    "m:answers": {
+      "type": "object",
+      "title": "Element Bot",
+      "additionalProperties": false,
+      "properties": {
+        "id": {
+          "type": "string",
+          "minLength": 1,
+          "example": "sk29dsjf"
+        },
+        "text": {
+          "type": "string",
+          "minLength": 1
+        }
+      }
+    },
     "sm:page-meta": {
       "type": "object",
       "title": "Shared: Page Meta",
@@ -161,6 +238,86 @@
       "properties": {
         "name": {
           "$ref": "#/definitions/sm:mldata"
+        }
+      }
+    },
+    "m:question-input": {
+      "type": "object",
+      "title": "Question (Input)",
+      "additionalProperties": false,
+      "properties": {
+        "id": {
+          "type": "string",
+          "minLength": 1
+        },
+        "text": {
+          "type": "string",
+          "minLength": 1
+        },
+        "reference": {
+          "type": "string",
+          "minLength": 1
+        },
+        "line": {
+          "type": "integer",
+          "minimum": 0
+        },
+        "level": {
+          "type": "integer",
+          "minimum": 0
+        },
+        "cleared": {
+          "type": "boolean"
+        },
+        "groupId": {
+          "type": "string",
+          "minLength": 1
+        },
+        "answers": {
+          "type": "array",
+          "items": {
+            "$ref": "#/definitions/m:answers"
+          }
+        }
+      }
+    },
+    "m:question-update-input": {
+      "type": "object",
+      "title": "Question (Update Input)",
+      "additionalProperties": false,
+      "properties": {
+        "id": {
+          "type": "string",
+          "minLength": 1
+        },
+        "text": {
+          "type": "string",
+          "minLength": 1
+        },
+        "reference": {
+          "type": "string",
+          "minLength": 1
+        },
+        "line": {
+          "type": "integer",
+          "minimum": 0
+        },
+        "level": {
+          "type": "integer",
+          "minimum": 0
+        },
+        "cleared": {
+          "type": "boolean"
+        },
+        "groupId": {
+          "type": "string",
+          "minLength": 1
+        },
+        "answers": {
+          "type": "array",
+          "items": {
+            "$ref": "#/definitions/m:answers"
+          }
         }
       }
     }
@@ -417,6 +574,202 @@
             "description": "",
             "schema": {
               "$ref": "#/definitions/m:group"
+            }
+          },
+          "default": {
+            "description": ""
+          }
+        }
+      }
+    },
+    "/questions/{id}": {
+      "get": {
+        "summary": "Get Question",
+        "operationId": "question:get",
+        "x-pcg": {
+          "model": "m:question",
+          "action": "get"
+        },
+        "parameters": [
+          {
+            "in": "query",
+            "name": "relations",
+            "type": "boolean",
+            "default": true
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "",
+            "schema": {
+              "$ref": "#/definitions/m:question"
+            }
+          },
+          "default": {
+            "description": ""
+          }
+        }
+      },
+      "put": {
+        "summary": "Update Question",
+        "operationId": "question:update",
+        "x-pcg": {
+          "model": "m:question",
+          "action": "update"
+        },
+        "parameters": [
+          {
+            "in": "body",
+            "name": "body",
+            "schema": {
+              "$ref": "#/definitions/m:question-update-input"
+            },
+            "x-examples": {
+              "application/json": {
+                "id": "WyJpZCIs2",
+                "line": 0,
+                "level": 0,
+                "cleared": false,
+                "answers": []
+              }
+            }
+          },
+          {
+            "in": "query",
+            "name": "relations",
+            "type": "boolean",
+            "default": true
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "",
+            "schema": {
+              "$ref": "#/definitions/m:question"
+            }
+          },
+          "default": {
+            "description": ""
+          }
+        }
+      },
+      "delete": {
+        "summary": "Delete Question",
+        "operationId": "question:delete",
+        "x-pcg": {
+          "model": "m:question",
+          "action": "delete"
+        },
+        "responses": {
+          "204": {
+            "description": "",
+            "schema": {
+              "type": "string"
+            }
+          },
+          "default": {
+            "description": ""
+          }
+        }
+      },
+      "parameters": [
+        {
+          "$ref": "#/parameters/id"
+        }
+      ]
+    },
+    "/questions": {
+      "get": {
+        "summary": "List Question",
+        "operationId": "question:list",
+        "x-pcg": {
+          "model": "m:question",
+          "action": "list"
+        },
+        "parameters": [
+          {
+            "in": "query",
+            "name": "relations",
+            "type": "boolean",
+            "default": false
+          },
+          {
+            "$ref": "#/parameters/limit"
+          },
+          {
+            "$ref": "#/parameters/offset"
+          },
+          {
+            "in": "query",
+            "name": "sort",
+            "type": "string",
+            "default": "text.asc"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "",
+            "schema": {
+              "type": "object",
+              "additionalProperties": false,
+              "properties": {
+                "questions": {
+                  "type": "array",
+                  "items": {
+                    "$ref": "#/definitions/m:question"
+                  }
+                },
+                "meta": {
+                  "$ref": "#/definitions/sm:page-meta"
+                }
+              },
+              "required": [
+                "questions",
+                "meta"
+              ]
+            }
+          },
+          "default": {
+            "description": ""
+          }
+        }
+      },
+      "post": {
+        "summary": "Create Question",
+        "operationId": "question:create",
+        "x-pcg": {
+          "model": "m:question",
+          "action": "create"
+        },
+        "parameters": [
+          {
+            "in": "body",
+            "name": "body",
+            "schema": {
+              "$ref": "#/definitions/m:question-input"
+            },
+            "x-examples": {
+              "application/json": {
+                "id": "WyJpZCIs1",
+                "line": 0,
+                "level": 0,
+                "cleared": false,
+                "answers": []
+              }
+            }
+          },
+          {
+            "in": "query",
+            "name": "relations",
+            "type": "boolean",
+            "default": true
+          }
+        ],
+        "responses": {
+          "201": {
+            "description": "",
+            "schema": {
+              "$ref": "#/definitions/m:question"
             }
           },
           "default": {
