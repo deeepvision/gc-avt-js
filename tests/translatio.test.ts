@@ -3,6 +3,7 @@ import '@deepvision/test-kit-jest';
 import Translatio from '@/index';
 import Groups from '@/modules/groups';
 import Questions from '@/modules/questions';
+import Translations from '@/modules/translations';
 
 describe('Translatio', () => {
     test('must throw on missed "endpoint" argument', async () => {
@@ -15,5 +16,6 @@ describe('Translatio', () => {
 
         expect(translatio.groups).toBeInstanceOf(Groups);
         expect(translatio.questions).toBeInstanceOf(Questions);
+        expect(translatio.translations).toBeInstanceOf(Translations);
     });
 });

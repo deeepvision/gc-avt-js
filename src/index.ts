@@ -17,6 +17,7 @@ class API {
 
     groups: Modules.Groups;
     questions: Modules.Questions;
+    translations: Modules.Translations;
 
     /* [UGC modules] */
     /* [/UGC] */
@@ -35,6 +36,7 @@ class API {
 
         this.groups = new Modules.Groups(this.http);
         this.questions = new Modules.Questions(this.http);
+        this.translations = new Modules.Translations(this.http);
     }
 }
 

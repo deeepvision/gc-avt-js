@@ -69,17 +69,17 @@
         "id": {
           "type": "string",
           "minLength": 1,
-          "example": "{string:8}"
+          "example": "sk29dsjf"
         },
         "text": {
           "type": "string",
           "minLength": 1,
-          "example": "{string:7}"
+          "example": "Some text"
         },
         "reference": {
           "type": "string",
           "minLength": 1,
-          "example": "{string:7}"
+          "example": "Some text"
         },
         "line": {
           "type": "integer",
@@ -119,6 +119,45 @@
         "text": {
           "type": "string",
           "minLength": 1
+        }
+      }
+    },
+    "m:translation": {
+      "type": "object",
+      "title": "Translation",
+      "additionalProperties": false,
+      "x-pcg": {
+        "rest-alias": "translations",
+        "pagination": true,
+        "sort": {
+          "default": "lang.asc"
+        }
+      },
+      "properties": {
+        "id": {
+          "type": "string",
+          "minLength": 1,
+          "x-pcg": {
+            "generated": true
+          }
+        },
+        "lang": {
+          "type": "string",
+          "minLength": 1,
+          "example": "ru"
+        },
+        "ref": {
+          "type": "string",
+          "minLength": 1,
+          "example": "Some text",
+          "x-pcg": {
+            "get-action": true
+          }
+        },
+        "text": {
+          "type": "string",
+          "minLength": 1,
+          "example": "Some text"
         }
       }
     },
@@ -318,6 +357,44 @@
           "items": {
             "$ref": "#/definitions/m:answers"
           }
+        }
+      }
+    },
+    "m:translation-input": {
+      "type": "object",
+      "title": "Translation (Input)",
+      "additionalProperties": false,
+      "properties": {
+        "lang": {
+          "type": "string",
+          "minLength": 1
+        },
+        "ref": {
+          "type": "string",
+          "minLength": 1
+        },
+        "text": {
+          "type": "string",
+          "minLength": 1
+        }
+      }
+    },
+    "m:translation-update-input": {
+      "type": "object",
+      "title": "Translation (Update Input)",
+      "additionalProperties": false,
+      "properties": {
+        "lang": {
+          "type": "string",
+          "minLength": 1
+        },
+        "ref": {
+          "type": "string",
+          "minLength": 1
+        },
+        "text": {
+          "type": "string",
+          "minLength": 1
         }
       }
     }
@@ -777,6 +854,205 @@
           }
         }
       }
+    },
+    "/translations/{id}": {
+      "get": {
+        "summary": "Get Translation",
+        "operationId": "translation:get",
+        "x-pcg": {
+          "model": "m:translation",
+          "action": "get"
+        },
+        "parameters": [],
+        "responses": {
+          "200": {
+            "description": "",
+            "schema": {
+              "$ref": "#/definitions/m:translation"
+            }
+          },
+          "default": {
+            "description": ""
+          }
+        }
+      },
+      "put": {
+        "summary": "Update Translation",
+        "operationId": "translation:update",
+        "x-pcg": {
+          "model": "m:translation",
+          "action": "update"
+        },
+        "parameters": [
+          {
+            "in": "body",
+            "name": "body",
+            "schema": {
+              "$ref": "#/definitions/m:translation-update-input"
+            },
+            "x-examples": {
+              "application/json": {
+                "lang": "ru",
+                "ref": "Some text",
+                "text": "Some text"
+              }
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "",
+            "schema": {
+              "$ref": "#/definitions/m:translation"
+            }
+          },
+          "default": {
+            "description": ""
+          }
+        }
+      },
+      "delete": {
+        "summary": "Delete Translation",
+        "operationId": "translation:delete",
+        "x-pcg": {
+          "model": "m:translation",
+          "action": "delete"
+        },
+        "responses": {
+          "204": {
+            "description": "",
+            "schema": {
+              "type": "string"
+            }
+          },
+          "default": {
+            "description": ""
+          }
+        }
+      },
+      "parameters": [
+        {
+          "$ref": "#/parameters/id"
+        }
+      ]
+    },
+    "/translations": {
+      "get": {
+        "summary": "List Translation",
+        "operationId": "translation:list",
+        "x-pcg": {
+          "model": "m:translation",
+          "action": "list"
+        },
+        "parameters": [
+          {
+            "$ref": "#/parameters/limit"
+          },
+          {
+            "$ref": "#/parameters/offset"
+          },
+          {
+            "in": "query",
+            "name": "sort",
+            "type": "string",
+            "default": "lang.asc"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "",
+            "schema": {
+              "type": "object",
+              "additionalProperties": false,
+              "properties": {
+                "translations": {
+                  "type": "array",
+                  "items": {
+                    "$ref": "#/definitions/m:translation"
+                  }
+                },
+                "meta": {
+                  "$ref": "#/definitions/sm:page-meta"
+                }
+              },
+              "required": [
+                "translations",
+                "meta"
+              ]
+            }
+          },
+          "default": {
+            "description": ""
+          }
+        }
+      },
+      "post": {
+        "summary": "Create Translation",
+        "operationId": "translation:create",
+        "x-pcg": {
+          "model": "m:translation",
+          "action": "create"
+        },
+        "parameters": [
+          {
+            "in": "body",
+            "name": "body",
+            "schema": {
+              "$ref": "#/definitions/m:translation-input"
+            },
+            "x-examples": {
+              "application/json": {
+                "lang": "ru",
+                "ref": "Some text",
+                "text": "Some text"
+              }
+            }
+          }
+        ],
+        "responses": {
+          "201": {
+            "description": "",
+            "schema": {
+              "$ref": "#/definitions/m:translation"
+            }
+          },
+          "default": {
+            "description": ""
+          }
+        }
+      }
+    },
+    "/translations/byRef/{ref}": {
+      "get": {
+        "summary": "Get Translation by Ref",
+        "operationId": "translation:get-by-ref",
+        "x-pcg": {
+          "property": "ref",
+          "model": "m:translation",
+          "action": "get-by-property"
+        },
+        "parameters": [],
+        "responses": {
+          "200": {
+            "description": "",
+            "schema": {
+              "$ref": "#/definitions/m:translation"
+            }
+          },
+          "default": {
+            "description": ""
+          }
+        }
+      },
+      "parameters": [
+        {
+          "name": "ref",
+          "in": "path",
+          "type": "string",
+          "required": true,
+          "minLength": 1
+        }
+      ]
     }
   }
 }
