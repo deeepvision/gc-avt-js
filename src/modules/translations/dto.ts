@@ -1,16 +1,16 @@
 /* eslint-disable @typescript-eslint/no-empty-interface, max-len */
 
 export interface BaseTranslation {
-    id?: string;
-    lang?: string;
-    ref?: string;
-    text?: string;
+    id: string;
+    lang: string;
+    ref: string;
+    text: string;
 }
 
 export interface BaseTranslationInput {
-    lang?: string;
-    ref?: string;
-    text?: string;
+    lang: string;
+    ref: string;
+    text: string;
 }
 
 export interface BaseTranslationUpdateInput {

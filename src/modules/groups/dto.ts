@@ -1,12 +1,12 @@
 /* eslint-disable @typescript-eslint/no-empty-interface, max-len */
 
 export interface BaseGroup {
-    id?: string;
-    name?: object;
+    id: string;
+    name: object;
 }
 
 export interface BaseGroupInput {
-    name?: object;
+    name: object;
 }
 
 export interface BaseGroupUpdateInput {

@@ -1,25 +1,25 @@
 /* eslint-disable @typescript-eslint/no-empty-interface, max-len */
 
 export interface BaseQuestion {
-    id?: string;
-    text?: string;
-    reference?: string;
-    line?: number;
-    level?: number;
+    id: string;
+    text: string;
+    reference: string;
+    line: number;
+    level: number;
     cleared?: boolean;
     group?: object;
-    answers?: Array<object>;
+    answers: Array<object>;
 }
 
 export interface BaseQuestionInput {
-    id?: string;
-    text?: string;
-    reference?: string;
-    line?: number;
-    level?: number;
+    id: string;
+    text: string;
+    reference: string;
+    line: number;
+    level: number;
     cleared?: boolean;
     groupId?: string;
-    answers?: Array<object>;
+    answers: Array<object>;
 }
 
 export interface BaseQuestionUpdateInput {

@@ -43,7 +43,11 @@
             "searchable": true
           }
         }
-      }
+      },
+      "required": [
+        "id",
+        "name"
+      ]
     },
     "m:question": {
       "type": "object",
@@ -69,7 +73,7 @@
         "id": {
           "type": "string",
           "minLength": 1,
-          "example": "sk29dsjf"
+          "example": "HQ{string:7}"
         },
         "text": {
           "type": "string",
@@ -101,12 +105,20 @@
         "answers": {
           "type": "array",
           "items": {
-            "$ref": "#/definitions/m:answers"
+            "$ref": "#/definitions/m:answer"
           }
         }
-      }
+      },
+      "required": [
+        "id",
+        "text",
+        "reference",
+        "line",
+        "level",
+        "answers"
+      ]
     },
-    "m:answers": {
+    "m:answer": {
       "type": "object",
       "title": "Element Bot",
       "additionalProperties": false,
@@ -114,7 +126,7 @@
         "id": {
           "type": "string",
           "minLength": 1,
-          "example": "sk29dsjf"
+          "example": "HQ{string:7}"
         },
         "text": {
           "type": "string",
@@ -159,7 +171,13 @@
           "minLength": 1,
           "example": "Some text"
         }
-      }
+      },
+      "required": [
+        "id",
+        "lang",
+        "ref",
+        "text"
+      ]
     },
     "sm:page-meta": {
       "type": "object",
@@ -268,7 +286,10 @@
         "name": {
           "$ref": "#/definitions/sm:mldata"
         }
-      }
+      },
+      "required": [
+        "name"
+      ]
     },
     "m:group-update-input": {
       "type": "object",
@@ -315,10 +336,18 @@
         "answers": {
           "type": "array",
           "items": {
-            "$ref": "#/definitions/m:answers"
+            "$ref": "#/definitions/m:answer"
           }
         }
-      }
+      },
+      "required": [
+        "id",
+        "text",
+        "reference",
+        "line",
+        "level",
+        "answers"
+      ]
     },
     "m:question-update-input": {
       "type": "object",
@@ -355,7 +384,7 @@
         "answers": {
           "type": "array",
           "items": {
-            "$ref": "#/definitions/m:answers"
+            "$ref": "#/definitions/m:answer"
           }
         }
       }
@@ -377,7 +406,12 @@
           "type": "string",
           "minLength": 1
         }
-      }
+      },
+      "required": [
+        "lang",
+        "ref",
+        "text"
+      ]
     },
     "m:translation-update-input": {
       "type": "object",
@@ -703,9 +737,11 @@
             },
             "x-examples": {
               "application/json": {
-                "id": "WyJpZCIs2",
-                "line": 0,
-                "level": 0,
+                "id": "HQWyJpZCI2",
+                "text": "Some text",
+                "reference": "Some text",
+                "line": 2,
+                "level": 2,
                 "cleared": false,
                 "answers": []
               }
@@ -827,9 +863,11 @@
             },
             "x-examples": {
               "application/json": {
-                "id": "WyJpZCIs1",
-                "line": 0,
-                "level": 0,
+                "id": "HQWyJpZCI1",
+                "text": "Some text",
+                "reference": "Some text",
+                "line": 2,
+                "level": 2,
                 "cleared": false,
                 "answers": []
               }
