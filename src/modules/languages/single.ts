@@ -5,23 +5,20 @@ import { APIError, parseResponse, ID } from '@deepvision/api-kit';
 /* [/UGC] */
 
 import {
-    Group,
+    Language,
     QueryParams,
-    GroupGetInput,
-    GroupUpdateInput,
+    LanguageGetInput,
+    LanguageUpdateInput,
     /* [UGC dto-import] */
     /* [/UGC] */
 } from './dto';
 
-import Questions from './questions';
-
 /* [UGC classes] */
 /* [/UGC] */
 
-export default class GroupController {
+export default class LanguageController {
     private readonly http: HttpClient;
     private readonly id: ID;
-    public readonly questions: Questions;
     /* [UGC declaration] */
     /* [/UGC] */
 
@@ -29,14 +26,12 @@ export default class GroupController {
         this.id = id;
         this.http = http;
 
-        this.questions = new Questions(http, id);
-
         /* [UGC constructor] */
         /* [/UGC] */
     }
 
-    public async get({ ml, lang }: GroupGetInput = {}): Promise<Group> {
-        const response = await this.http.get(`/groups/${this.id}`, {
+    public async get({ ml, lang }: LanguageGetInput = {}): Promise<Language> {
+        const response = await this.http.get(`/languages/${this.id}`, {
             query: {
                 ml,
             },
@@ -48,12 +43,12 @@ export default class GroupController {
         return parseResponse(response);
     }
 
-    public async update(data: GroupUpdateInput, { ml, lang }: QueryParams = {}): Promise<Group> {
+    public async update(data: LanguageUpdateInput, { ml, lang }: QueryParams = {}): Promise<Language> {
         if (!data) {
             throw new APIError(APIError.DATA, '"data" object is required');
         }
 
-        const response = await this.http.put(`/groups/${this.id}`, data, {
+        const response = await this.http.put(`/languages/${this.id}`, data, {
             query: {
                 ml: lang ? false : ml,
             },
@@ -66,7 +61,7 @@ export default class GroupController {
     }
 
     public async delete(): Promise<string> {
-        const response = await this.http.delete(`/groups/${this.id}`);
+        const response = await this.http.delete(`/languages/${this.id}`);
 
         return parseResponse(response, { successCode: 204 });
     }

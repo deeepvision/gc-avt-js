@@ -30,11 +30,10 @@ export default class QuestionController {
         /* [/UGC] */
     }
 
-    public async get({ ml, lang, relations }: QuestionGetInput = {}): Promise<Question> {
+    public async get({ ml, lang }: QuestionGetInput = {}): Promise<Question> {
         const response = await this.http.get(`/questions/${this.id}`, {
             query: {
                 ml,
-                relations,
             },
             headers: {
                 'Accept-Language': lang,
@@ -44,7 +43,7 @@ export default class QuestionController {
         return parseResponse(response);
     }
 
-    public async update(data: QuestionUpdateInput, { ml, lang, relations }: QueryParams = {}): Promise<Question> {
+    public async update(data: QuestionUpdateInput, { ml, lang }: QueryParams = {}): Promise<Question> {
         if (!data) {
             throw new APIError(APIError.DATA, '"data" object is required');
         }
@@ -52,7 +51,6 @@ export default class QuestionController {
         const response = await this.http.put(`/questions/${this.id}`, data, {
             query: {
                 ml: lang ? false : ml,
-                relations,
             },
             headers: {
                 'Accept-Language': lang,
