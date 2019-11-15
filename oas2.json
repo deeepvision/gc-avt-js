@@ -14,6 +14,47 @@
   },
   "host": "api.ss.deepvision.team",
   "definitions": {
+    "m:project": {
+      "type": "object",
+      "title": "Project",
+      "additionalProperties": false,
+      "x-pcg": {
+        "rest-alias": "projects",
+        "pagination": true,
+        "sort": {
+          "default": "name.asc"
+        },
+        "relations": {
+          "hasMany": [
+            {
+              "model": "m:group",
+              "type": "submodel"
+            }
+          ]
+        }
+      },
+      "properties": {
+        "id": {
+          "type": "string",
+          "minLength": 1,
+          "example": "{string:7}"
+        },
+        "name": {
+          "$ref": "#/definitions/sm:mlvalue",
+          "example": {
+            "en": "Heroes"
+          },
+          "x-pcg": {
+            "ml": true,
+            "searchable": true
+          }
+        }
+      },
+      "required": [
+        "id",
+        "name"
+      ]
+    },
     "m:group": {
       "type": "object",
       "title": "Group",
@@ -23,6 +64,20 @@
         "pagination": true,
         "sort": {
           "default": "name.asc"
+        },
+        "relations": {
+          "belongsTo": [
+            {
+              "model": "m:project",
+              "as": "submodel"
+            }
+          ],
+          "hasMany": [
+            {
+              "model": "m:question",
+              "type": "submodel"
+            }
+          ]
         }
       },
       "properties": {
@@ -42,6 +97,10 @@
             "ml": true,
             "searchable": true
           }
+        },
+        "projectId": {
+          "type": "string",
+          "minLength": 1
         }
       },
       "required": [
@@ -63,8 +122,7 @@
           "belongsTo": [
             {
               "model": "m:group",
-              "property": "group",
-              "as": "model"
+              "as": "submodel"
             }
           ]
         }
@@ -99,8 +157,9 @@
           "type": "boolean",
           "default": false
         },
-        "group": {
-          "$ref": "#/definitions/m:group"
+        "groupId": {
+          "type": "string",
+          "minLength": 1
         },
         "answers": {
           "type": "array",
@@ -177,6 +236,48 @@
         "lang",
         "ref",
         "text"
+      ]
+    },
+    "m:language": {
+      "type": "object",
+      "title": "Language",
+      "description": "The properties that are shared amongst all versions of the Language model.",
+      "additionalProperties": false,
+      "x-pcg": {
+        "rest-alias": "languages",
+        "pagination": true,
+        "sort": {
+          "default": "title.asc"
+        }
+      },
+      "properties": {
+        "id": {
+          "type": "string",
+          "minLength": 1,
+          "example": "{string:8}"
+        },
+        "title": {
+          "$ref": "#/definitions/sm:mlvalue",
+          "example": {
+            "en": "English"
+          },
+          "minLength": 1,
+          "x-pcg": {
+            "ml": true,
+            "searchable": true
+          }
+        },
+        "index": {
+          "type": "integer",
+          "minimum": 0,
+          "x-pcg": {
+            "index": true
+          }
+        }
+      },
+      "required": [
+        "id",
+        "title"
       ]
     },
     "sm:page-meta": {
@@ -278,6 +379,38 @@
         "mimeType"
       ]
     },
+    "m:project-input": {
+      "type": "object",
+      "title": "Project (Input)",
+      "additionalProperties": false,
+      "properties": {
+        "id": {
+          "type": "string",
+          "minLength": 1
+        },
+        "name": {
+          "$ref": "#/definitions/sm:mldata"
+        }
+      },
+      "required": [
+        "id",
+        "name"
+      ]
+    },
+    "m:project-update-input": {
+      "type": "object",
+      "title": "Project (Update Input)",
+      "additionalProperties": false,
+      "properties": {
+        "id": {
+          "type": "string",
+          "minLength": 1
+        },
+        "name": {
+          "$ref": "#/definitions/sm:mldata"
+        }
+      }
+    },
     "m:group-input": {
       "type": "object",
       "title": "Group (Input)",
@@ -329,10 +462,6 @@
         "cleared": {
           "type": "boolean"
         },
-        "groupId": {
-          "type": "string",
-          "minLength": 1
-        },
         "answers": {
           "type": "array",
           "items": {
@@ -376,10 +505,6 @@
         },
         "cleared": {
           "type": "boolean"
-        },
-        "groupId": {
-          "type": "string",
-          "minLength": 1
         },
         "answers": {
           "type": "array",
@@ -431,6 +556,46 @@
           "minLength": 1
         }
       }
+    },
+    "m:language-input": {
+      "type": "object",
+      "title": "Language (Input)",
+      "additionalProperties": false,
+      "properties": {
+        "id": {
+          "type": "string",
+          "minLength": 1
+        },
+        "title": {
+          "$ref": "#/definitions/sm:mldata"
+        },
+        "index": {
+          "type": "integer",
+          "minimum": 0
+        }
+      },
+      "required": [
+        "id",
+        "title"
+      ]
+    },
+    "m:language-update-input": {
+      "type": "object",
+      "title": "Language (Update Input)",
+      "additionalProperties": false,
+      "properties": {
+        "id": {
+          "type": "string",
+          "minLength": 1
+        },
+        "title": {
+          "$ref": "#/definitions/sm:mldata"
+        },
+        "index": {
+          "type": "integer",
+          "minimum": 0
+        }
+      }
     }
   },
   "parameters": {
@@ -480,6 +645,342 @@
     "application/json"
   ],
   "paths": {
+    "/projects/{id}": {
+      "get": {
+        "summary": "Get Project",
+        "operationId": "project:get",
+        "x-pcg": {
+          "model": "m:project",
+          "action": "get"
+        },
+        "parameters": [
+          {
+            "in": "query",
+            "name": "ml",
+            "type": "boolean"
+          },
+          {
+            "in": "header",
+            "name": "Accept-Language",
+            "type": "string"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "",
+            "schema": {
+              "$ref": "#/definitions/m:project"
+            }
+          },
+          "default": {
+            "description": ""
+          }
+        }
+      },
+      "put": {
+        "summary": "Update Project",
+        "operationId": "project:update",
+        "x-pcg": {
+          "model": "m:project",
+          "action": "update"
+        },
+        "parameters": [
+          {
+            "in": "body",
+            "name": "body",
+            "schema": {
+              "$ref": "#/definitions/m:project-update-input"
+            },
+            "x-examples": {
+              "application/json": {
+                "id": "WyJpZCI2",
+                "name": {
+                  "en": "Heroes"
+                }
+              }
+            }
+          },
+          {
+            "in": "query",
+            "name": "ml",
+            "type": "boolean",
+            "default": true
+          },
+          {
+            "in": "header",
+            "name": "Accept-Language",
+            "type": "string"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "",
+            "schema": {
+              "$ref": "#/definitions/m:project"
+            }
+          },
+          "default": {
+            "description": ""
+          }
+        }
+      },
+      "delete": {
+        "summary": "Delete Project",
+        "operationId": "project:delete",
+        "x-pcg": {
+          "model": "m:project",
+          "action": "delete"
+        },
+        "responses": {
+          "204": {
+            "description": "",
+            "schema": {
+              "type": "string"
+            }
+          },
+          "default": {
+            "description": ""
+          }
+        }
+      },
+      "parameters": [
+        {
+          "$ref": "#/parameters/id"
+        }
+      ]
+    },
+    "/projects": {
+      "get": {
+        "summary": "List Project",
+        "operationId": "project:list",
+        "x-pcg": {
+          "model": "m:project",
+          "action": "list"
+        },
+        "parameters": [
+          {
+            "$ref": "#/parameters/limit"
+          },
+          {
+            "$ref": "#/parameters/offset"
+          },
+          {
+            "in": "query",
+            "name": "sort",
+            "type": "string",
+            "default": "name.asc"
+          },
+          {
+            "$ref": "#/parameters/text"
+          },
+          {
+            "in": "query",
+            "name": "ml",
+            "type": "boolean"
+          },
+          {
+            "in": "header",
+            "name": "Accept-Language",
+            "type": "string"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "",
+            "schema": {
+              "type": "object",
+              "additionalProperties": false,
+              "properties": {
+                "projects": {
+                  "type": "array",
+                  "items": {
+                    "$ref": "#/definitions/m:project"
+                  }
+                },
+                "meta": {
+                  "$ref": "#/definitions/sm:page-meta"
+                }
+              },
+              "required": [
+                "projects",
+                "meta"
+              ]
+            }
+          },
+          "default": {
+            "description": ""
+          }
+        }
+      },
+      "post": {
+        "summary": "Create Project",
+        "operationId": "project:create",
+        "x-pcg": {
+          "model": "m:project",
+          "action": "create"
+        },
+        "parameters": [
+          {
+            "in": "body",
+            "name": "body",
+            "schema": {
+              "$ref": "#/definitions/m:project-input"
+            },
+            "x-examples": {
+              "application/json": {
+                "id": "WyJpZCI1",
+                "name": {
+                  "en": "Heroes"
+                }
+              }
+            }
+          },
+          {
+            "in": "query",
+            "name": "ml",
+            "type": "boolean",
+            "default": true
+          },
+          {
+            "in": "header",
+            "name": "Accept-Language",
+            "type": "string"
+          }
+        ],
+        "responses": {
+          "201": {
+            "description": "",
+            "schema": {
+              "$ref": "#/definitions/m:project"
+            }
+          },
+          "default": {
+            "description": ""
+          }
+        }
+      }
+    },
+    "/projects/{id}/groups": {
+      "get": {
+        "summary": "List Groups",
+        "operationId": "project:list-groups",
+        "x-pcg": {
+          "model": "m:project",
+          "action": "list-child",
+          "submodel": {
+            "name": "m:group"
+          }
+        },
+        "parameters": [
+          {
+            "$ref": "#/parameters/limit"
+          },
+          {
+            "$ref": "#/parameters/offset"
+          },
+          {
+            "in": "query",
+            "name": "sort",
+            "type": "string",
+            "default": "name.asc"
+          },
+          {
+            "$ref": "#/parameters/text"
+          },
+          {
+            "in": "query",
+            "name": "ml",
+            "type": "boolean"
+          },
+          {
+            "in": "header",
+            "name": "Accept-Language",
+            "type": "string"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "",
+            "schema": {
+              "type": "object",
+              "additionalProperties": false,
+              "properties": {
+                "groups": {
+                  "type": "array",
+                  "items": {
+                    "$ref": "#/definitions/m:group"
+                  }
+                },
+                "meta": {
+                  "$ref": "#/definitions/sm:page-meta"
+                }
+              },
+              "required": [
+                "groups",
+                "meta"
+              ]
+            }
+          },
+          "default": {
+            "description": ""
+          }
+        }
+      },
+      "parameters": [
+        {
+          "$ref": "#/parameters/id"
+        }
+      ],
+      "post": {
+        "summary": "Create Group",
+        "operationId": "project:create-group",
+        "x-pcg": {
+          "model": "m:project",
+          "action": "create-child",
+          "submodel": {
+            "name": "m:group"
+          }
+        },
+        "parameters": [
+          {
+            "in": "body",
+            "name": "body",
+            "schema": {
+              "$ref": "#/definitions/m:group-input"
+            },
+            "x-examples": {
+              "application/json": {
+                "name": {
+                  "en": "Group"
+                }
+              }
+            }
+          },
+          {
+            "in": "query",
+            "name": "ml",
+            "type": "boolean",
+            "default": true
+          },
+          {
+            "in": "header",
+            "name": "Accept-Language",
+            "type": "string"
+          }
+        ],
+        "responses": {
+          "201": {
+            "description": "",
+            "schema": {
+              "$ref": "#/definitions/m:group"
+            }
+          },
+          "default": {
+            "description": ""
+          }
+        }
+      }
+    },
     "/groups/{id}": {
       "get": {
         "summary": "Get Group",
@@ -583,229 +1084,18 @@
         }
       ]
     },
-    "/groups": {
+    "/groups/{id}/questions": {
       "get": {
-        "summary": "List Group",
-        "operationId": "group:list",
+        "summary": "List Questions",
+        "operationId": "group:list-questions",
         "x-pcg": {
           "model": "m:group",
-          "action": "list"
+          "action": "list-child",
+          "submodel": {
+            "name": "m:question"
+          }
         },
         "parameters": [
-          {
-            "$ref": "#/parameters/limit"
-          },
-          {
-            "$ref": "#/parameters/offset"
-          },
-          {
-            "in": "query",
-            "name": "sort",
-            "type": "string",
-            "default": "name.asc"
-          },
-          {
-            "$ref": "#/parameters/text"
-          },
-          {
-            "in": "query",
-            "name": "ml",
-            "type": "boolean"
-          },
-          {
-            "in": "header",
-            "name": "Accept-Language",
-            "type": "string"
-          }
-        ],
-        "responses": {
-          "200": {
-            "description": "",
-            "schema": {
-              "type": "object",
-              "additionalProperties": false,
-              "properties": {
-                "groups": {
-                  "type": "array",
-                  "items": {
-                    "$ref": "#/definitions/m:group"
-                  }
-                },
-                "meta": {
-                  "$ref": "#/definitions/sm:page-meta"
-                }
-              },
-              "required": [
-                "groups",
-                "meta"
-              ]
-            }
-          },
-          "default": {
-            "description": ""
-          }
-        }
-      },
-      "post": {
-        "summary": "Create Group",
-        "operationId": "group:create",
-        "x-pcg": {
-          "model": "m:group",
-          "action": "create"
-        },
-        "parameters": [
-          {
-            "in": "body",
-            "name": "body",
-            "schema": {
-              "$ref": "#/definitions/m:group-input"
-            },
-            "x-examples": {
-              "application/json": {
-                "name": {
-                  "en": "Group"
-                }
-              }
-            }
-          },
-          {
-            "in": "query",
-            "name": "ml",
-            "type": "boolean",
-            "default": true
-          },
-          {
-            "in": "header",
-            "name": "Accept-Language",
-            "type": "string"
-          }
-        ],
-        "responses": {
-          "201": {
-            "description": "",
-            "schema": {
-              "$ref": "#/definitions/m:group"
-            }
-          },
-          "default": {
-            "description": ""
-          }
-        }
-      }
-    },
-    "/questions/{id}": {
-      "get": {
-        "summary": "Get Question",
-        "operationId": "question:get",
-        "x-pcg": {
-          "model": "m:question",
-          "action": "get"
-        },
-        "parameters": [
-          {
-            "in": "query",
-            "name": "relations",
-            "type": "boolean",
-            "default": true
-          }
-        ],
-        "responses": {
-          "200": {
-            "description": "",
-            "schema": {
-              "$ref": "#/definitions/m:question"
-            }
-          },
-          "default": {
-            "description": ""
-          }
-        }
-      },
-      "put": {
-        "summary": "Update Question",
-        "operationId": "question:update",
-        "x-pcg": {
-          "model": "m:question",
-          "action": "update"
-        },
-        "parameters": [
-          {
-            "in": "body",
-            "name": "body",
-            "schema": {
-              "$ref": "#/definitions/m:question-update-input"
-            },
-            "x-examples": {
-              "application/json": {
-                "id": "HQWyJpZCI2",
-                "text": "Some text",
-                "reference": "Some text",
-                "line": 2,
-                "level": 2,
-                "cleared": false,
-                "answers": []
-              }
-            }
-          },
-          {
-            "in": "query",
-            "name": "relations",
-            "type": "boolean",
-            "default": true
-          }
-        ],
-        "responses": {
-          "200": {
-            "description": "",
-            "schema": {
-              "$ref": "#/definitions/m:question"
-            }
-          },
-          "default": {
-            "description": ""
-          }
-        }
-      },
-      "delete": {
-        "summary": "Delete Question",
-        "operationId": "question:delete",
-        "x-pcg": {
-          "model": "m:question",
-          "action": "delete"
-        },
-        "responses": {
-          "204": {
-            "description": "",
-            "schema": {
-              "type": "string"
-            }
-          },
-          "default": {
-            "description": ""
-          }
-        }
-      },
-      "parameters": [
-        {
-          "$ref": "#/parameters/id"
-        }
-      ]
-    },
-    "/questions": {
-      "get": {
-        "summary": "List Question",
-        "operationId": "question:list",
-        "x-pcg": {
-          "model": "m:question",
-          "action": "list"
-        },
-        "parameters": [
-          {
-            "in": "query",
-            "name": "relations",
-            "type": "boolean",
-            "default": false
-          },
           {
             "$ref": "#/parameters/limit"
           },
@@ -847,12 +1137,20 @@
           }
         }
       },
+      "parameters": [
+        {
+          "$ref": "#/parameters/id"
+        }
+      ],
       "post": {
         "summary": "Create Question",
-        "operationId": "question:create",
+        "operationId": "group:create-question",
         "x-pcg": {
-          "model": "m:question",
-          "action": "create"
+          "model": "m:group",
+          "action": "create-child",
+          "submodel": {
+            "name": "m:question"
+          }
         },
         "parameters": [
           {
@@ -863,7 +1161,7 @@
             },
             "x-examples": {
               "application/json": {
-                "id": "HQWyJpZCI1",
+                "id": "HQWyJpZCI4",
                 "text": "Some text",
                 "reference": "Some text",
                 "line": 2,
@@ -872,12 +1170,6 @@
                 "answers": []
               }
             }
-          },
-          {
-            "in": "query",
-            "name": "relations",
-            "type": "boolean",
-            "default": true
           }
         ],
         "responses": {
@@ -892,6 +1184,91 @@
           }
         }
       }
+    },
+    "/questions/{id}": {
+      "get": {
+        "summary": "Get Question",
+        "operationId": "question:get",
+        "x-pcg": {
+          "model": "m:question",
+          "action": "get"
+        },
+        "parameters": [],
+        "responses": {
+          "200": {
+            "description": "",
+            "schema": {
+              "$ref": "#/definitions/m:question"
+            }
+          },
+          "default": {
+            "description": ""
+          }
+        }
+      },
+      "put": {
+        "summary": "Update Question",
+        "operationId": "question:update",
+        "x-pcg": {
+          "model": "m:question",
+          "action": "update"
+        },
+        "parameters": [
+          {
+            "in": "body",
+            "name": "body",
+            "schema": {
+              "$ref": "#/definitions/m:question-update-input"
+            },
+            "x-examples": {
+              "application/json": {
+                "id": "HQWyJpZCI5",
+                "text": "Some text",
+                "reference": "Some text",
+                "line": 2,
+                "level": 2,
+                "cleared": false,
+                "answers": []
+              }
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "",
+            "schema": {
+              "$ref": "#/definitions/m:question"
+            }
+          },
+          "default": {
+            "description": ""
+          }
+        }
+      },
+      "delete": {
+        "summary": "Delete Question",
+        "operationId": "question:delete",
+        "x-pcg": {
+          "model": "m:question",
+          "action": "delete"
+        },
+        "responses": {
+          "204": {
+            "description": "",
+            "schema": {
+              "type": "string"
+            }
+          },
+          "default": {
+            "description": ""
+          }
+        }
+      },
+      "parameters": [
+        {
+          "$ref": "#/parameters/id"
+        }
+      ]
     },
     "/translations/{id}": {
       "get": {
@@ -1091,6 +1468,269 @@
           "minLength": 1
         }
       ]
+    },
+    "/languages/{id}": {
+      "get": {
+        "summary": "Get Language",
+        "operationId": "language:get",
+        "x-pcg": {
+          "model": "m:language",
+          "action": "get"
+        },
+        "parameters": [
+          {
+            "in": "query",
+            "name": "ml",
+            "type": "boolean"
+          },
+          {
+            "in": "header",
+            "name": "Accept-Language",
+            "type": "string"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "",
+            "schema": {
+              "$ref": "#/definitions/m:language"
+            }
+          },
+          "default": {
+            "description": ""
+          }
+        }
+      },
+      "put": {
+        "summary": "Update Language",
+        "operationId": "language:update",
+        "x-pcg": {
+          "model": "m:language",
+          "action": "update"
+        },
+        "parameters": [
+          {
+            "in": "body",
+            "name": "body",
+            "schema": {
+              "$ref": "#/definitions/m:language-update-input"
+            },
+            "x-examples": {
+              "application/json": {
+                "id": "WyJpZCIs2",
+                "title": {
+                  "en": "English"
+                },
+                "index": 0
+              }
+            }
+          },
+          {
+            "in": "query",
+            "name": "ml",
+            "type": "boolean",
+            "default": true
+          },
+          {
+            "in": "header",
+            "name": "Accept-Language",
+            "type": "string"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "",
+            "schema": {
+              "$ref": "#/definitions/m:language"
+            }
+          },
+          "default": {
+            "description": ""
+          }
+        }
+      },
+      "delete": {
+        "summary": "Delete Language",
+        "operationId": "language:delete",
+        "x-pcg": {
+          "model": "m:language",
+          "action": "delete"
+        },
+        "responses": {
+          "204": {
+            "description": "",
+            "schema": {
+              "type": "string"
+            }
+          },
+          "default": {
+            "description": ""
+          }
+        }
+      },
+      "parameters": [
+        {
+          "$ref": "#/parameters/id"
+        }
+      ]
+    },
+    "/languages": {
+      "get": {
+        "summary": "List Language",
+        "operationId": "language:list",
+        "x-pcg": {
+          "model": "m:language",
+          "action": "list"
+        },
+        "parameters": [
+          {
+            "$ref": "#/parameters/limit"
+          },
+          {
+            "$ref": "#/parameters/offset"
+          },
+          {
+            "in": "query",
+            "name": "sort",
+            "type": "string",
+            "default": "title.asc",
+            "enum": [
+              "index.asc"
+            ]
+          },
+          {
+            "$ref": "#/parameters/text"
+          },
+          {
+            "in": "query",
+            "name": "ml",
+            "type": "boolean"
+          },
+          {
+            "in": "header",
+            "name": "Accept-Language",
+            "type": "string"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "",
+            "schema": {
+              "type": "object",
+              "additionalProperties": false,
+              "properties": {
+                "languages": {
+                  "type": "array",
+                  "items": {
+                    "$ref": "#/definitions/m:language"
+                  }
+                },
+                "meta": {
+                  "$ref": "#/definitions/sm:page-meta"
+                }
+              },
+              "required": [
+                "languages",
+                "meta"
+              ]
+            }
+          },
+          "default": {
+            "description": ""
+          }
+        }
+      },
+      "post": {
+        "summary": "Create Language",
+        "operationId": "language:create",
+        "x-pcg": {
+          "model": "m:language",
+          "action": "create"
+        },
+        "parameters": [
+          {
+            "in": "body",
+            "name": "body",
+            "schema": {
+              "$ref": "#/definitions/m:language-input"
+            },
+            "x-examples": {
+              "application/json": {
+                "id": "WyJpZCIs1",
+                "title": {
+                  "en": "English"
+                },
+                "index": 0
+              }
+            }
+          },
+          {
+            "in": "query",
+            "name": "ml",
+            "type": "boolean",
+            "default": true
+          },
+          {
+            "in": "header",
+            "name": "Accept-Language",
+            "type": "string"
+          }
+        ],
+        "responses": {
+          "201": {
+            "description": "",
+            "schema": {
+              "$ref": "#/definitions/m:language"
+            }
+          },
+          "default": {
+            "description": ""
+          }
+        }
+      }
+    },
+    "/languages/reorder": {
+      "post": {
+        "summary": "Reorder Languages",
+        "x-pcg": {
+          "model": "m:language",
+          "action": "reorder"
+        },
+        "description": "Changing an order of Languages",
+        "operationId": "language:reorder",
+        "parameters": [
+          {
+            "in": "body",
+            "name": "body",
+            "schema": {
+              "type": "object",
+              "minProperties": 2
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "",
+            "schema": {
+              "type": "object",
+              "properties": {
+                "state": {
+                  "type": "string"
+                },
+                "meta": {
+                  "minProperties": 2
+                }
+              },
+              "required": [
+                "state"
+              ]
+            }
+          },
+          "default": {
+            "description": ""
+          }
+        }
+      }
     }
   }
 }
