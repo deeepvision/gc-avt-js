@@ -198,6 +198,7 @@
       "title": "Translation",
       "additionalProperties": false,
       "x-pcg": {
+        "multilang": false,
         "rest-alias": "translations",
         "pagination": true,
         "sort": {
@@ -215,14 +216,17 @@
         "lang": {
           "type": "string",
           "minLength": 1,
-          "example": "ru"
+          "example": "ru",
+          "x-pcg": {
+            "filterable": true
+          }
         },
         "ref": {
           "type": "string",
           "minLength": 1,
           "example": "Some text",
           "x-pcg": {
-            "get-action": true
+            "filterable": true
           }
         },
         "text": {
@@ -1371,6 +1375,22 @@
             "name": "sort",
             "type": "string",
             "default": "lang.asc"
+          },
+          {
+            "in": "query",
+            "name": "lang",
+            "type": "array",
+            "items": {
+              "type": "string"
+            }
+          },
+          {
+            "in": "query",
+            "name": "ref",
+            "type": "array",
+            "items": {
+              "type": "string"
+            }
           }
         ],
         "responses": {
@@ -1436,38 +1456,6 @@
           }
         }
       }
-    },
-    "/translations/byRef/{ref}": {
-      "get": {
-        "summary": "Get Translation by Ref",
-        "operationId": "translation:get-by-ref",
-        "x-pcg": {
-          "property": "ref",
-          "model": "m:translation",
-          "action": "get-by-property"
-        },
-        "parameters": [],
-        "responses": {
-          "200": {
-            "description": "",
-            "schema": {
-              "$ref": "#/definitions/m:translation"
-            }
-          },
-          "default": {
-            "description": ""
-          }
-        }
-      },
-      "parameters": [
-        {
-          "name": "ref",
-          "in": "path",
-          "type": "string",
-          "required": true,
-          "minLength": 1
-        }
-      ]
     },
     "/languages/{id}": {
       "get": {

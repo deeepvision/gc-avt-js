@@ -35,30 +35,52 @@ export default class ProjectController {
         /* [/UGC] */
     }
 
-    public async get({ ml, lang }: ProjectGetInput = {}): Promise<Project> {
+    public async get(input: ProjectGetInput = {}): Promise<Project> {
+        const {
+            ml,
+            lang,
+            /* [UGC get-input] */
+            /* [/UGC] */
+        } = input;
+
         const response = await this.http.get(`/projects/${this.id}`, {
             query: {
                 ml,
+                /* [UGC get-query] */
+                /* [/UGC] */
             },
             headers: {
                 'Accept-Language': lang,
+                /* [UGC get-headers] */
+                /* [/UGC] */
             },
         });
 
         return parseResponse(response);
     }
 
-    public async update(data: ProjectUpdateInput, { ml, lang }: QueryParams = {}): Promise<Project> {
+    public async update(data: ProjectUpdateInput, params: QueryParams = {}): Promise<Project> {
         if (!data) {
             throw new APIError(APIError.DATA, '"data" object is required');
         }
 
+        const {
+            ml,
+            lang,
+            /* [UGC update-params] */
+            /* [/UGC] */
+        } = params;
+
         const response = await this.http.put(`/projects/${this.id}`, data, {
             query: {
                 ml: lang ? false : ml,
+                /* [UGC update-query] */
+                /* [/UGC] */
             },
             headers: {
                 'Accept-Language': lang,
+                /* [UGC update-headers] */
+                /* [/UGC] */
             },
         });
 

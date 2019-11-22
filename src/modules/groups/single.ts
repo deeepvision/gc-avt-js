@@ -35,30 +35,52 @@ export default class GroupController {
         /* [/UGC] */
     }
 
-    public async get({ ml, lang }: GroupGetInput = {}): Promise<Group> {
+    public async get(input: GroupGetInput = {}): Promise<Group> {
+        const {
+            ml,
+            lang,
+            /* [UGC get-input] */
+            /* [/UGC] */
+        } = input;
+
         const response = await this.http.get(`/groups/${this.id}`, {
             query: {
                 ml,
+                /* [UGC get-query] */
+                /* [/UGC] */
             },
             headers: {
                 'Accept-Language': lang,
+                /* [UGC get-headers] */
+                /* [/UGC] */
             },
         });
 
         return parseResponse(response);
     }
 
-    public async update(data: GroupUpdateInput, { ml, lang }: QueryParams = {}): Promise<Group> {
+    public async update(data: GroupUpdateInput, params: QueryParams = {}): Promise<Group> {
         if (!data) {
             throw new APIError(APIError.DATA, '"data" object is required');
         }
 
+        const {
+            ml,
+            lang,
+            /* [UGC update-params] */
+            /* [/UGC] */
+        } = params;
+
         const response = await this.http.put(`/groups/${this.id}`, data, {
             query: {
                 ml: lang ? false : ml,
+                /* [UGC update-query] */
+                /* [/UGC] */
             },
             headers: {
                 'Accept-Language': lang,
+                /* [UGC update-headers] */
+                /* [/UGC] */
             },
         });
 

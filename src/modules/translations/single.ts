@@ -30,30 +30,44 @@ export default class TranslationController {
         /* [/UGC] */
     }
 
-    public async get({ ml, lang }: TranslationGetInput = {}): Promise<Translation> {
+    public async get(input: TranslationGetInput = {}): Promise<Translation> {
+        const {
+            /* [UGC get-input] */
+            /* [/UGC] */
+        } = input;
+
         const response = await this.http.get(`/translations/${this.id}`, {
             query: {
-                ml,
+                /* [UGC get-query] */
+                /* [/UGC] */
             },
             headers: {
-                'Accept-Language': lang,
+                /* [UGC get-headers] */
+                /* [/UGC] */
             },
         });
 
         return parseResponse(response);
     }
 
-    public async update(data: TranslationUpdateInput, { ml, lang }: QueryParams = {}): Promise<Translation> {
+    public async update(data: TranslationUpdateInput, params: QueryParams = {}): Promise<Translation> {
         if (!data) {
             throw new APIError(APIError.DATA, '"data" object is required');
         }
 
+        const {
+            /* [UGC update-params] */
+            /* [/UGC] */
+        } = params;
+
         const response = await this.http.put(`/translations/${this.id}`, data, {
             query: {
-                ml: lang ? false : ml,
+                /* [UGC update-query] */
+                /* [/UGC] */
             },
             headers: {
-                'Accept-Language': lang,
+                /* [UGC update-headers] */
+                /* [/UGC] */
             },
         });
 

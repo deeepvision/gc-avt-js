@@ -46,10 +46,10 @@ export default class {
             offset = 0,
             sort,
             text,
+            lang,
             ml,
             ids,
             exclude,
-            lang,
             /* [UGC list-input] */
             /* [/UGC] */
         } = input;
@@ -77,23 +77,36 @@ export default class {
             query,
             headers: {
                 'Accept-Language': lang,
+                /* [UGC list-headers] */
+                /* [/UGC] */
             },
         });
 
         return parseResponse(response);
     }
 
-    async create(data: ProjectInput, { ml, lang }: QueryParams = {}): Promise<Project> {
+    async create(data: ProjectInput, params: QueryParams = {}): Promise<Project> {
         if (!data) {
             throw new APIError(APIError.DATA, '"data" object is required');
         }
 
+        const {
+            ml,
+            lang,
+            /* [UGC create-params] */
+            /* [/UGC] */
+        } = params;
+
         const response = await this.http.post('/projects', data, {
             query: {
                 ml: lang ? false : ml,
+                /* [UGC create-query] */
+                /* [/UGC] */
             },
             headers: {
                 'Accept-Language': lang,
+                /* [UGC create-headers] */
+                /* [/UGC] */
             },
         });
 

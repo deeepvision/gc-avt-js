@@ -35,8 +35,6 @@ export interface TranslationUpdateInput extends BaseTranslationUpdateInput {
 }
 
 export interface QueryParams {
-    ml?: boolean;
-    lang?: string;
 }
 
 export interface TranslationGetInput extends QueryParams {
@@ -49,15 +47,15 @@ export interface TranslationListQuery {
     offset?: number;
     sort?: string;
     text?: string;
-    ml?: boolean;
     ids?: string;
     exclude?: string;
+    lang?: string;
+    ref?: string;
     /* [UGC list-query] */
     /* [/UGC] */
 }
 
 export interface TranslationListInput extends TranslationListQuery {
-    lang?: string;
 }
 
 export interface TranslationList {

@@ -46,10 +46,10 @@ export default class {
             offset = 0,
             sort,
             text,
-            ml,
             ids,
             exclude,
             lang,
+            ref,
             /* [UGC list-input] */
             /* [/UGC] */
         } = input;
@@ -57,7 +57,8 @@ export default class {
         const query: TranslationListQuery = {
             sort,
             text,
-            ml,
+            lang,
+            ref,
             /* [UGC list-query] */
             /* [/UGC] */
         };
@@ -76,41 +77,36 @@ export default class {
         const response = await this.http.get('/translations', {
             query,
             headers: {
-                'Accept-Language': lang,
+                /* [UGC list-headers] */
+                /* [/UGC] */
             },
         });
 
         return parseResponse(response);
     }
 
-    async create(data: TranslationInput, { ml, lang }: QueryParams = {}): Promise<Translation> {
+    async create(data: TranslationInput, params: QueryParams = {}): Promise<Translation> {
         if (!data) {
             throw new APIError(APIError.DATA, '"data" object is required');
         }
 
+        const {
+            /* [UGC create-params] */
+            /* [/UGC] */
+        } = params;
+
         const response = await this.http.post('/translations', data, {
             query: {
-                ml: lang ? false : ml,
+                /* [UGC create-query] */
+                /* [/UGC] */
             },
             headers: {
-                'Accept-Language': lang,
+                /* [UGC create-headers] */
+                /* [/UGC] */
             },
         });
 
         return parseResponse(response, { successCode: 201 });
-    }
-
-    public async getByRef(ref, { ml, lang }: QueryParams = {}): Promise<Translation> {
-        const response = await this.http.get(`/translations/byRef/${ref}`, {
-            query: {
-                ml,
-            },
-            headers: {
-                'Accept-Language': lang,
-            },
-        });
-
-        return parseResponse(response);
     }
 
     /* [UGC methods] */

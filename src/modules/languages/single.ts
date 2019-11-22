@@ -30,30 +30,52 @@ export default class LanguageController {
         /* [/UGC] */
     }
 
-    public async get({ ml, lang }: LanguageGetInput = {}): Promise<Language> {
+    public async get(input: LanguageGetInput = {}): Promise<Language> {
+        const {
+            ml,
+            lang,
+            /* [UGC get-input] */
+            /* [/UGC] */
+        } = input;
+
         const response = await this.http.get(`/languages/${this.id}`, {
             query: {
                 ml,
+                /* [UGC get-query] */
+                /* [/UGC] */
             },
             headers: {
                 'Accept-Language': lang,
+                /* [UGC get-headers] */
+                /* [/UGC] */
             },
         });
 
         return parseResponse(response);
     }
 
-    public async update(data: LanguageUpdateInput, { ml, lang }: QueryParams = {}): Promise<Language> {
+    public async update(data: LanguageUpdateInput, params: QueryParams = {}): Promise<Language> {
         if (!data) {
             throw new APIError(APIError.DATA, '"data" object is required');
         }
 
+        const {
+            ml,
+            lang,
+            /* [UGC update-params] */
+            /* [/UGC] */
+        } = params;
+
         const response = await this.http.put(`/languages/${this.id}`, data, {
             query: {
                 ml: lang ? false : ml,
+                /* [UGC update-query] */
+                /* [/UGC] */
             },
             headers: {
                 'Accept-Language': lang,
+                /* [UGC update-headers] */
+                /* [/UGC] */
             },
         });
 

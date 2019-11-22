@@ -30,30 +30,52 @@ export default class QuestionController {
         /* [/UGC] */
     }
 
-    public async get({ ml, lang }: QuestionGetInput = {}): Promise<Question> {
+    public async get(input: QuestionGetInput = {}): Promise<Question> {
+        const {
+            ml,
+            lang,
+            /* [UGC get-input] */
+            /* [/UGC] */
+        } = input;
+
         const response = await this.http.get(`/questions/${this.id}`, {
             query: {
                 ml,
+                /* [UGC get-query] */
+                /* [/UGC] */
             },
             headers: {
                 'Accept-Language': lang,
+                /* [UGC get-headers] */
+                /* [/UGC] */
             },
         });
 
         return parseResponse(response);
     }
 
-    public async update(data: QuestionUpdateInput, { ml, lang }: QueryParams = {}): Promise<Question> {
+    public async update(data: QuestionUpdateInput, params: QueryParams = {}): Promise<Question> {
         if (!data) {
             throw new APIError(APIError.DATA, '"data" object is required');
         }
 
+        const {
+            ml,
+            lang,
+            /* [UGC update-params] */
+            /* [/UGC] */
+        } = params;
+
         const response = await this.http.put(`/questions/${this.id}`, data, {
             query: {
                 ml: lang ? false : ml,
+                /* [UGC update-query] */
+                /* [/UGC] */
             },
             headers: {
                 'Accept-Language': lang,
+                /* [UGC update-headers] */
+                /* [/UGC] */
             },
         });
 
