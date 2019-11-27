@@ -6,6 +6,7 @@ export interface BaseQuestion {
     reference: string;
     line: number;
     level: number;
+    votes?: number;
     cleared?: boolean;
     groupId?: string;
     answers: Array<object>;
@@ -16,7 +17,6 @@ export interface BaseQuestionInput {
     text: string;
     reference: string;
     line: number;
-    level: number;
     cleared?: boolean;
     answers: Array<object>;
 }
@@ -26,7 +26,6 @@ export interface BaseQuestionUpdateInput {
     text?: string;
     reference?: string;
     line?: number;
-    level?: number;
     cleared?: boolean;
     answers?: Array<object>;
 }

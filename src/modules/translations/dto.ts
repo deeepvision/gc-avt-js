@@ -5,6 +5,7 @@ export interface BaseTranslation {
     lang: string;
     ref: string;
     text: string;
+    votes?: number;
 }
 
 export interface BaseTranslationInput {
@@ -69,4 +70,7 @@ export interface TranslationList {
 }
 
 /* [UGC interfaces] */
+export interface ApproveResult {
+    votes: number;
+}
 /* [/UGC] */

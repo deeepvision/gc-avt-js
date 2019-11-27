@@ -151,7 +151,19 @@
         "level": {
           "type": "integer",
           "minimum": 0,
-          "example": 2
+          "default": 0,
+          "x-pcg": {
+            "sortable": true,
+            "internal": true
+          }
+        },
+        "votes": {
+          "type": "integer",
+          "minimum": 0,
+          "default": 0,
+          "x-pcg": {
+            "internal": true
+          }
         },
         "cleared": {
           "type": "boolean",
@@ -233,6 +245,15 @@
           "type": "string",
           "minLength": 1,
           "example": "Some text"
+        },
+        "votes": {
+          "type": "number",
+          "minimum": 0,
+          "default": 0,
+          "x-pcg": {
+            "sortable": true,
+            "internal": true
+          }
         }
       },
       "required": [
@@ -459,10 +480,6 @@
           "type": "integer",
           "minimum": 0
         },
-        "level": {
-          "type": "integer",
-          "minimum": 0
-        },
         "cleared": {
           "type": "boolean"
         },
@@ -478,7 +495,6 @@
         "text",
         "reference",
         "line",
-        "level",
         "answers"
       ]
     },
@@ -500,10 +516,6 @@
           "minLength": 1
         },
         "line": {
-          "type": "integer",
-          "minimum": 0
-        },
-        "level": {
           "type": "integer",
           "minimum": 0
         },
@@ -1226,11 +1238,10 @@
             },
             "x-examples": {
               "application/json": {
-                "id": "HQWyJpZCI5",
+                "id": "HQWyJpZCI1",
                 "text": "Some text",
                 "reference": "Some text",
                 "line": 2,
-                "level": 2,
                 "cleared": false,
                 "answers": []
               }
@@ -1261,6 +1272,35 @@
             "description": "",
             "schema": {
               "type": "string"
+            }
+          },
+          "default": {
+            "description": ""
+          }
+        }
+      },
+      "parameters": [
+        {
+          "$ref": "#/parameters/id"
+        }
+      ]
+    },
+    "/questions/{id}/approve": {
+      "get": {
+        "summary": "Vote (complexity)",
+        "operationId": "question:vote",
+        "parameters": [],
+        "responses": {
+          "200": {
+            "description": "",
+            "schema": {
+              "type": "object",
+              "properties": {
+                "rating": {
+                  "type": "number",
+                  "minimum": 0
+                }
+              }
             }
           },
           "default": {
@@ -1355,6 +1395,35 @@
         }
       ]
     },
+    "/translations/{id}/approve": {
+      "get": {
+        "summary": "Approve Translation",
+        "operationId": "translation:approve",
+        "parameters": [],
+        "responses": {
+          "200": {
+            "description": "",
+            "schema": {
+              "type": "object",
+              "properties": {
+                "votes": {
+                  "type": "number",
+                  "minimum": 0
+                }
+              }
+            }
+          },
+          "default": {
+            "description": ""
+          }
+        }
+      },
+      "parameters": [
+        {
+          "$ref": "#/parameters/id"
+        }
+      ]
+    },
     "/translations": {
       "get": {
         "summary": "List Translation",
@@ -1374,7 +1443,11 @@
             "in": "query",
             "name": "sort",
             "type": "string",
-            "default": "lang.asc"
+            "default": "lang.asc",
+            "enum": [
+              "votes.asc",
+              "votes.desc"
+            ]
           },
           {
             "in": "query",

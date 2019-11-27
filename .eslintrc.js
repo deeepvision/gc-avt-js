@@ -5,7 +5,6 @@ module.exports = {
   extends: ['@deepvision', '@deepvision/eslint-config/plugins/typescript'],
   rules: {
     '@typescript-eslint/no-type-alias': 'off',
-    'no-empty-pattern': 'off',
     '@typescript-eslint/strict-boolean-expressions': 'off',
     '@typescript-eslint/explicit-member-accessibility': 'off',
     '@typescript-eslint/explicit-function-return-type': ['error', {
