@@ -90,13 +90,13 @@ export default class QuestionController {
     }
 
     /* [UGC methods] */
-    public async vote(rating: number): Promise<VoteResult> {
-        if (rating < 1 || rating > 5) {
-            throw new APIError('INVALID-RATING', 'Rating must be number from 1 to 5');
+    public async vote(level: number): Promise<VoteResult> {
+        if (level < 1 || level > 5) {
+            throw new APIError('INVALID-LEVEL', 'Level must be number from 1 to 5');
         }
 
         const response = await this.http.get(`/questions/${this.id}/vote`, {
-            query: { rating },
+            query: { level },
         });
 
         return parseResponse(response);
