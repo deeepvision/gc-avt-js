@@ -42,4 +42,7 @@ export interface QuestionGetInput extends QueryParams {
 }
 
 /* [UGC interfaces] */
+export interface VoteResult {
+    rating: number;
+}
 /* [/UGC] */

@@ -10,6 +10,7 @@ import {
     QuestionGetInput,
     QuestionUpdateInput,
     /* [UGC dto-import] */
+    VoteResult,
     /* [/UGC] */
 } from './dto';
 
@@ -89,5 +90,16 @@ export default class QuestionController {
     }
 
     /* [UGC methods] */
+    public async vote(rating: number): Promise<VoteResult> {
+        if (rating < 1 || rating > 5) {
+            throw new APIError('INVALID-RATING', 'Rating must be number from 1 to 5');
+        }
+
+        const response = await this.http.get(`/questions/${this.id}/vote`, {
+            query: { rating },
+        });
+
+        return parseResponse(response);
+    }
     /* [/UGC] */
 }
