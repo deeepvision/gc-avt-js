@@ -20,6 +20,7 @@ class API {
     questions: Modules.Questions;
     translations: Modules.Translations;
     languages: Modules.Languages;
+    sessions: Modules.Sessions;
 
     /* [UGC modules] */
     /* [/UGC] */
@@ -41,6 +42,7 @@ class API {
         this.questions = new Modules.Questions(this.http);
         this.translations = new Modules.Translations(this.http);
         this.languages = new Modules.Languages(this.http);
+        this.sessions = new Modules.Sessions(this.http);
     }
 }
 

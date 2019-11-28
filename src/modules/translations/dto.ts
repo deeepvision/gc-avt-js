@@ -3,6 +3,7 @@
 export interface BaseTranslation {
     id: string;
     lang: string;
+    target?: string;
     ref: string;
     text: string;
     votes?: number;
@@ -10,12 +11,14 @@ export interface BaseTranslation {
 
 export interface BaseTranslationInput {
     lang: string;
+    target?: string;
     ref: string;
     text: string;
 }
 
 export interface BaseTranslationUpdateInput {
     lang?: string;
+    target?: string;
     ref?: string;
     text?: string;
 }
@@ -51,6 +54,7 @@ export interface TranslationListQuery {
     ids?: string;
     exclude?: string;
     lang?: string;
+    target?: string;
     ref?: string;
     /* [UGC list-query] */
     /* [/UGC] */

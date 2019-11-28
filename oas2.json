@@ -233,6 +233,18 @@
             "filterable": true
           }
         },
+        "target": {
+          "type": "string",
+          "minLength": 1,
+          "example": "question",
+          "enum": [
+            "question",
+            "answer"
+          ],
+          "x-pcg": {
+            "filterable": true
+          }
+        },
         "ref": {
           "type": "string",
           "minLength": 1,
@@ -303,6 +315,69 @@
       "required": [
         "id",
         "title"
+      ]
+    },
+    "m:session": {
+      "type": "object",
+      "title": "Session",
+      "additionalProperties": false,
+      "x-pcg": {
+        "rest-alias": "sessions",
+        "pagination": true,
+        "relations": {
+          "belongsTo": [
+            {
+              "remote": true,
+              "property": "user",
+              "as": "model"
+            }
+          ]
+        },
+        "sort": {
+          "default": "name.asc"
+        }
+      },
+      "properties": {
+        "id": {
+          "type": "string",
+          "minLength": 1,
+          "x-pcg": {
+            "generated": true
+          }
+        },
+        "complete": {
+          "type": "boolean",
+          "default": false,
+          "x-pcg": {
+            "filterable": true
+          }
+        },
+        "dateCreated": {
+          "type": "string",
+          "format": "date-time",
+          "example": "2019-08-19T16:44:02.647Z",
+          "x-pcg": {
+            "sortable": true
+          }
+        },
+        "user": {
+          "x-pcg": {
+            "filterable": true
+          },
+          "type": "object"
+        },
+        "questions": {
+          "type": "array",
+          "items": {
+            "$ref": "#/definitions/m:question"
+          },
+          "x-pcg": {
+            "internal": true
+          }
+        }
+      },
+      "required": [
+        "id"
       ]
     },
     "sm:page-meta": {
@@ -539,6 +614,14 @@
           "type": "string",
           "minLength": 1
         },
+        "target": {
+          "type": "string",
+          "minLength": 1,
+          "enum": [
+            "question",
+            "answer"
+          ]
+        },
         "ref": {
           "type": "string",
           "minLength": 1
@@ -562,6 +645,14 @@
         "lang": {
           "type": "string",
           "minLength": 1
+        },
+        "target": {
+          "type": "string",
+          "minLength": 1,
+          "enum": [
+            "question",
+            "answer"
+          ]
         },
         "ref": {
           "type": "string",
@@ -610,6 +701,34 @@
         "index": {
           "type": "integer",
           "minimum": 0
+        }
+      }
+    },
+    "m:session-input": {
+      "type": "object",
+      "title": "Session (Input)",
+      "additionalProperties": false,
+      "properties": {
+        "complete": {
+          "type": "boolean"
+        },
+        "userId": {
+          "type": "string",
+          "minLength": 1
+        }
+      }
+    },
+    "m:session-update-input": {
+      "type": "object",
+      "title": "Session (Update Input)",
+      "additionalProperties": false,
+      "properties": {
+        "complete": {
+          "type": "boolean"
+        },
+        "userId": {
+          "type": "string",
+          "minLength": 1
         }
       }
     }
@@ -661,6 +780,412 @@
     "application/json"
   ],
   "paths": {
+    "/translations/{id}": {
+      "get": {
+        "summary": "Get Translation",
+        "operationId": "translation:get",
+        "x-pcg": {
+          "model": "m:translation",
+          "action": "get"
+        },
+        "parameters": [],
+        "responses": {
+          "200": {
+            "description": "",
+            "schema": {
+              "$ref": "#/definitions/m:translation"
+            }
+          },
+          "default": {
+            "description": ""
+          }
+        }
+      },
+      "put": {
+        "summary": "Update Translation",
+        "operationId": "translation:update",
+        "x-pcg": {
+          "model": "m:translation",
+          "action": "update"
+        },
+        "parameters": [
+          {
+            "in": "body",
+            "name": "body",
+            "schema": {
+              "$ref": "#/definitions/m:translation-update-input"
+            },
+            "x-examples": {
+              "application/json": {
+                "lang": "ru",
+                "target": "question",
+                "ref": "Some text",
+                "text": "Some text"
+              }
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "",
+            "schema": {
+              "$ref": "#/definitions/m:translation"
+            }
+          },
+          "default": {
+            "description": ""
+          }
+        }
+      },
+      "delete": {
+        "summary": "Delete Translation",
+        "operationId": "translation:delete",
+        "x-pcg": {
+          "model": "m:translation",
+          "action": "delete"
+        },
+        "responses": {
+          "204": {
+            "description": "",
+            "schema": {
+              "type": "string"
+            }
+          },
+          "default": {
+            "description": ""
+          }
+        }
+      },
+      "parameters": [
+        {
+          "$ref": "#/parameters/id"
+        }
+      ]
+    },
+    "/translations": {
+      "get": {
+        "summary": "List Translation",
+        "operationId": "translation:list",
+        "x-pcg": {
+          "model": "m:translation",
+          "action": "list"
+        },
+        "parameters": [
+          {
+            "$ref": "#/parameters/limit"
+          },
+          {
+            "$ref": "#/parameters/offset"
+          },
+          {
+            "in": "query",
+            "name": "sort",
+            "type": "string",
+            "default": "lang.asc",
+            "enum": [
+              "votes.asc",
+              "votes.desc"
+            ]
+          },
+          {
+            "in": "query",
+            "name": "lang",
+            "type": "array",
+            "items": {
+              "type": "string"
+            }
+          },
+          {
+            "in": "query",
+            "name": "target",
+            "type": "array",
+            "items": {
+              "type": "string",
+              "enum": [
+                "question",
+                "answer"
+              ]
+            }
+          },
+          {
+            "in": "query",
+            "name": "ref",
+            "type": "array",
+            "items": {
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "",
+            "schema": {
+              "type": "object",
+              "additionalProperties": false,
+              "properties": {
+                "translations": {
+                  "type": "array",
+                  "items": {
+                    "$ref": "#/definitions/m:translation"
+                  }
+                },
+                "meta": {
+                  "$ref": "#/definitions/sm:page-meta"
+                }
+              },
+              "required": [
+                "translations",
+                "meta"
+              ]
+            }
+          },
+          "default": {
+            "description": ""
+          }
+        }
+      },
+      "post": {
+        "summary": "Create Translation",
+        "operationId": "translation:create",
+        "x-pcg": {
+          "model": "m:translation",
+          "action": "create"
+        },
+        "parameters": [
+          {
+            "in": "body",
+            "name": "body",
+            "schema": {
+              "$ref": "#/definitions/m:translation-input"
+            },
+            "x-examples": {
+              "application/json": {
+                "lang": "ru",
+                "target": "question",
+                "ref": "Some text",
+                "text": "Some text"
+              }
+            }
+          }
+        ],
+        "responses": {
+          "201": {
+            "description": "",
+            "schema": {
+              "$ref": "#/definitions/m:translation"
+            }
+          },
+          "default": {
+            "description": ""
+          }
+        }
+      }
+    },
+    "/sessions/{id}": {
+      "get": {
+        "summary": "Get Session",
+        "operationId": "session:get",
+        "x-pcg": {
+          "model": "m:session",
+          "action": "get"
+        },
+        "parameters": [
+          {
+            "in": "query",
+            "name": "relations",
+            "type": "boolean",
+            "default": true
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "",
+            "schema": {
+              "$ref": "#/definitions/m:session"
+            }
+          },
+          "default": {
+            "description": ""
+          }
+        }
+      },
+      "put": {
+        "summary": "Update Session",
+        "operationId": "session:update",
+        "x-pcg": {
+          "model": "m:session",
+          "action": "update"
+        },
+        "parameters": [
+          {
+            "in": "body",
+            "name": "body",
+            "schema": {
+              "$ref": "#/definitions/m:session-update-input"
+            },
+            "x-examples": {
+              "application/json": {
+                "complete": false
+              }
+            }
+          },
+          {
+            "in": "query",
+            "name": "relations",
+            "type": "boolean",
+            "default": true
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "",
+            "schema": {
+              "$ref": "#/definitions/m:session"
+            }
+          },
+          "default": {
+            "description": ""
+          }
+        }
+      },
+      "delete": {
+        "summary": "Delete Session",
+        "operationId": "session:delete",
+        "x-pcg": {
+          "model": "m:session",
+          "action": "delete"
+        },
+        "responses": {
+          "204": {
+            "description": "",
+            "schema": {
+              "type": "string"
+            }
+          },
+          "default": {
+            "description": ""
+          }
+        }
+      },
+      "parameters": [
+        {
+          "$ref": "#/parameters/id"
+        }
+      ]
+    },
+    "/sessions": {
+      "get": {
+        "summary": "List Session",
+        "operationId": "session:list",
+        "x-pcg": {
+          "model": "m:session",
+          "action": "list"
+        },
+        "parameters": [
+          {
+            "in": "query",
+            "name": "relations",
+            "type": "boolean",
+            "default": false
+          },
+          {
+            "$ref": "#/parameters/limit"
+          },
+          {
+            "$ref": "#/parameters/offset"
+          },
+          {
+            "in": "query",
+            "name": "sort",
+            "type": "string",
+            "default": "name.asc",
+            "enum": [
+              "dateCreated.asc",
+              "dateCreated.desc"
+            ]
+          },
+          {
+            "in": "query",
+            "name": "complete",
+            "type": "boolean"
+          },
+          {
+            "in": "query",
+            "name": "user",
+            "type": "array",
+            "items": {
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "",
+            "schema": {
+              "type": "object",
+              "additionalProperties": false,
+              "properties": {
+                "sessions": {
+                  "type": "array",
+                  "items": {
+                    "$ref": "#/definitions/m:session"
+                  }
+                },
+                "meta": {
+                  "$ref": "#/definitions/sm:page-meta"
+                }
+              },
+              "required": [
+                "sessions",
+                "meta"
+              ]
+            }
+          },
+          "default": {
+            "description": ""
+          }
+        }
+      },
+      "post": {
+        "summary": "Create Session",
+        "operationId": "session:create",
+        "x-pcg": {
+          "model": "m:session",
+          "action": "create"
+        },
+        "parameters": [
+          {
+            "in": "body",
+            "name": "body",
+            "schema": {
+              "$ref": "#/definitions/m:session-input"
+            },
+            "x-examples": {
+              "application/json": {
+                "complete": false
+              }
+            }
+          },
+          {
+            "in": "query",
+            "name": "relations",
+            "type": "boolean",
+            "default": true
+          }
+        ],
+        "responses": {
+          "201": {
+            "description": "",
+            "schema": {
+              "$ref": "#/definitions/m:session"
+            }
+          },
+          "default": {
+            "description": ""
+          }
+        }
+      }
+    },
     "/projects/{id}": {
       "get": {
         "summary": "Get Project",
@@ -1122,7 +1647,11 @@
             "in": "query",
             "name": "sort",
             "type": "string",
-            "default": "text.asc"
+            "default": "text.asc",
+            "enum": [
+              "level.asc",
+              "level.desc"
+            ]
           }
         ],
         "responses": {
@@ -1181,7 +1710,6 @@
                 "text": "Some text",
                 "reference": "Some text",
                 "line": 2,
-                "level": 2,
                 "cleared": false,
                 "answers": []
               }
@@ -1238,7 +1766,7 @@
             },
             "x-examples": {
               "application/json": {
-                "id": "HQWyJpZCI1",
+                "id": "HQWyJpZCI5",
                 "text": "Some text",
                 "reference": "Some text",
                 "line": 2,
@@ -1284,514 +1812,6 @@
           "$ref": "#/parameters/id"
         }
       ]
-    },
-    "/questions/{id}/approve": {
-      "get": {
-        "summary": "Vote (complexity)",
-        "operationId": "question:vote",
-        "parameters": [],
-        "responses": {
-          "200": {
-            "description": "",
-            "schema": {
-              "type": "object",
-              "properties": {
-                "rating": {
-                  "type": "number",
-                  "minimum": 0
-                }
-              }
-            }
-          },
-          "default": {
-            "description": ""
-          }
-        }
-      },
-      "parameters": [
-        {
-          "$ref": "#/parameters/id"
-        }
-      ]
-    },
-    "/translations/{id}": {
-      "get": {
-        "summary": "Get Translation",
-        "operationId": "translation:get",
-        "x-pcg": {
-          "model": "m:translation",
-          "action": "get"
-        },
-        "parameters": [],
-        "responses": {
-          "200": {
-            "description": "",
-            "schema": {
-              "$ref": "#/definitions/m:translation"
-            }
-          },
-          "default": {
-            "description": ""
-          }
-        }
-      },
-      "put": {
-        "summary": "Update Translation",
-        "operationId": "translation:update",
-        "x-pcg": {
-          "model": "m:translation",
-          "action": "update"
-        },
-        "parameters": [
-          {
-            "in": "body",
-            "name": "body",
-            "schema": {
-              "$ref": "#/definitions/m:translation-update-input"
-            },
-            "x-examples": {
-              "application/json": {
-                "lang": "ru",
-                "ref": "Some text",
-                "text": "Some text"
-              }
-            }
-          }
-        ],
-        "responses": {
-          "200": {
-            "description": "",
-            "schema": {
-              "$ref": "#/definitions/m:translation"
-            }
-          },
-          "default": {
-            "description": ""
-          }
-        }
-      },
-      "delete": {
-        "summary": "Delete Translation",
-        "operationId": "translation:delete",
-        "x-pcg": {
-          "model": "m:translation",
-          "action": "delete"
-        },
-        "responses": {
-          "204": {
-            "description": "",
-            "schema": {
-              "type": "string"
-            }
-          },
-          "default": {
-            "description": ""
-          }
-        }
-      },
-      "parameters": [
-        {
-          "$ref": "#/parameters/id"
-        }
-      ]
-    },
-    "/translations/{id}/approve": {
-      "get": {
-        "summary": "Approve Translation",
-        "operationId": "translation:approve",
-        "parameters": [],
-        "responses": {
-          "200": {
-            "description": "",
-            "schema": {
-              "type": "object",
-              "properties": {
-                "votes": {
-                  "type": "number",
-                  "minimum": 0
-                }
-              }
-            }
-          },
-          "default": {
-            "description": ""
-          }
-        }
-      },
-      "parameters": [
-        {
-          "$ref": "#/parameters/id"
-        }
-      ]
-    },
-    "/translations": {
-      "get": {
-        "summary": "List Translation",
-        "operationId": "translation:list",
-        "x-pcg": {
-          "model": "m:translation",
-          "action": "list"
-        },
-        "parameters": [
-          {
-            "$ref": "#/parameters/limit"
-          },
-          {
-            "$ref": "#/parameters/offset"
-          },
-          {
-            "in": "query",
-            "name": "sort",
-            "type": "string",
-            "default": "lang.asc",
-            "enum": [
-              "votes.asc",
-              "votes.desc"
-            ]
-          },
-          {
-            "in": "query",
-            "name": "lang",
-            "type": "array",
-            "items": {
-              "type": "string"
-            }
-          },
-          {
-            "in": "query",
-            "name": "ref",
-            "type": "array",
-            "items": {
-              "type": "string"
-            }
-          }
-        ],
-        "responses": {
-          "200": {
-            "description": "",
-            "schema": {
-              "type": "object",
-              "additionalProperties": false,
-              "properties": {
-                "translations": {
-                  "type": "array",
-                  "items": {
-                    "$ref": "#/definitions/m:translation"
-                  }
-                },
-                "meta": {
-                  "$ref": "#/definitions/sm:page-meta"
-                }
-              },
-              "required": [
-                "translations",
-                "meta"
-              ]
-            }
-          },
-          "default": {
-            "description": ""
-          }
-        }
-      },
-      "post": {
-        "summary": "Create Translation",
-        "operationId": "translation:create",
-        "x-pcg": {
-          "model": "m:translation",
-          "action": "create"
-        },
-        "parameters": [
-          {
-            "in": "body",
-            "name": "body",
-            "schema": {
-              "$ref": "#/definitions/m:translation-input"
-            },
-            "x-examples": {
-              "application/json": {
-                "lang": "ru",
-                "ref": "Some text",
-                "text": "Some text"
-              }
-            }
-          }
-        ],
-        "responses": {
-          "201": {
-            "description": "",
-            "schema": {
-              "$ref": "#/definitions/m:translation"
-            }
-          },
-          "default": {
-            "description": ""
-          }
-        }
-      }
-    },
-    "/languages/{id}": {
-      "get": {
-        "summary": "Get Language",
-        "operationId": "language:get",
-        "x-pcg": {
-          "model": "m:language",
-          "action": "get"
-        },
-        "parameters": [
-          {
-            "in": "query",
-            "name": "ml",
-            "type": "boolean"
-          },
-          {
-            "in": "header",
-            "name": "Accept-Language",
-            "type": "string"
-          }
-        ],
-        "responses": {
-          "200": {
-            "description": "",
-            "schema": {
-              "$ref": "#/definitions/m:language"
-            }
-          },
-          "default": {
-            "description": ""
-          }
-        }
-      },
-      "put": {
-        "summary": "Update Language",
-        "operationId": "language:update",
-        "x-pcg": {
-          "model": "m:language",
-          "action": "update"
-        },
-        "parameters": [
-          {
-            "in": "body",
-            "name": "body",
-            "schema": {
-              "$ref": "#/definitions/m:language-update-input"
-            },
-            "x-examples": {
-              "application/json": {
-                "id": "WyJpZCIs2",
-                "title": {
-                  "en": "English"
-                },
-                "index": 0
-              }
-            }
-          },
-          {
-            "in": "query",
-            "name": "ml",
-            "type": "boolean",
-            "default": true
-          },
-          {
-            "in": "header",
-            "name": "Accept-Language",
-            "type": "string"
-          }
-        ],
-        "responses": {
-          "200": {
-            "description": "",
-            "schema": {
-              "$ref": "#/definitions/m:language"
-            }
-          },
-          "default": {
-            "description": ""
-          }
-        }
-      },
-      "delete": {
-        "summary": "Delete Language",
-        "operationId": "language:delete",
-        "x-pcg": {
-          "model": "m:language",
-          "action": "delete"
-        },
-        "responses": {
-          "204": {
-            "description": "",
-            "schema": {
-              "type": "string"
-            }
-          },
-          "default": {
-            "description": ""
-          }
-        }
-      },
-      "parameters": [
-        {
-          "$ref": "#/parameters/id"
-        }
-      ]
-    },
-    "/languages": {
-      "get": {
-        "summary": "List Language",
-        "operationId": "language:list",
-        "x-pcg": {
-          "model": "m:language",
-          "action": "list"
-        },
-        "parameters": [
-          {
-            "$ref": "#/parameters/limit"
-          },
-          {
-            "$ref": "#/parameters/offset"
-          },
-          {
-            "in": "query",
-            "name": "sort",
-            "type": "string",
-            "default": "title.asc",
-            "enum": [
-              "index.asc"
-            ]
-          },
-          {
-            "$ref": "#/parameters/text"
-          },
-          {
-            "in": "query",
-            "name": "ml",
-            "type": "boolean"
-          },
-          {
-            "in": "header",
-            "name": "Accept-Language",
-            "type": "string"
-          }
-        ],
-        "responses": {
-          "200": {
-            "description": "",
-            "schema": {
-              "type": "object",
-              "additionalProperties": false,
-              "properties": {
-                "languages": {
-                  "type": "array",
-                  "items": {
-                    "$ref": "#/definitions/m:language"
-                  }
-                },
-                "meta": {
-                  "$ref": "#/definitions/sm:page-meta"
-                }
-              },
-              "required": [
-                "languages",
-                "meta"
-              ]
-            }
-          },
-          "default": {
-            "description": ""
-          }
-        }
-      },
-      "post": {
-        "summary": "Create Language",
-        "operationId": "language:create",
-        "x-pcg": {
-          "model": "m:language",
-          "action": "create"
-        },
-        "parameters": [
-          {
-            "in": "body",
-            "name": "body",
-            "schema": {
-              "$ref": "#/definitions/m:language-input"
-            },
-            "x-examples": {
-              "application/json": {
-                "id": "WyJpZCIs1",
-                "title": {
-                  "en": "English"
-                },
-                "index": 0
-              }
-            }
-          },
-          {
-            "in": "query",
-            "name": "ml",
-            "type": "boolean",
-            "default": true
-          },
-          {
-            "in": "header",
-            "name": "Accept-Language",
-            "type": "string"
-          }
-        ],
-        "responses": {
-          "201": {
-            "description": "",
-            "schema": {
-              "$ref": "#/definitions/m:language"
-            }
-          },
-          "default": {
-            "description": ""
-          }
-        }
-      }
-    },
-    "/languages/reorder": {
-      "post": {
-        "summary": "Reorder Languages",
-        "x-pcg": {
-          "model": "m:language",
-          "action": "reorder"
-        },
-        "description": "Changing an order of Languages",
-        "operationId": "language:reorder",
-        "parameters": [
-          {
-            "in": "body",
-            "name": "body",
-            "schema": {
-              "type": "object",
-              "minProperties": 2
-            }
-          }
-        ],
-        "responses": {
-          "200": {
-            "description": "",
-            "schema": {
-              "type": "object",
-              "properties": {
-                "state": {
-                  "type": "string"
-                },
-                "meta": {
-                  "minProperties": 2
-                }
-              },
-              "required": [
-                "state"
-              ]
-            }
-          },
-          "default": {
-            "description": ""
-          }
-        }
-      }
     }
   }
 }
