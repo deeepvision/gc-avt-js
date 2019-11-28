@@ -5,19 +5,18 @@ import { APIError, parseResponse, ID } from '@deepvision/api-kit';
 /* [/UGC] */
 
 import {
-    Question,
+    Session,
     QueryParams,
-    QuestionGetInput,
-    QuestionUpdateInput,
+    SessionGetInput,
+    SessionUpdateInput,
     /* [UGC dto-import] */
-    VoteResult,
     /* [/UGC] */
 } from './dto';
 
 /* [UGC classes] */
 /* [/UGC] */
 
-export default class QuestionController {
+export default class SessionController {
     private readonly http: HttpClient;
     private readonly id: ID;
     /* [UGC declaration] */
@@ -31,17 +30,19 @@ export default class QuestionController {
         /* [/UGC] */
     }
 
-    public async get(input: QuestionGetInput = {}): Promise<Question> {
+    public async get(input: SessionGetInput = {}): Promise<Session> {
         const {
             ml,
             lang,
+            relations,
             /* [UGC get-input] */
             /* [/UGC] */
         } = input;
 
-        const response = await this.http.get(`/questions/${this.id}`, {
+        const response = await this.http.get(`/sessions/${this.id}`, {
             query: {
                 ml,
+                relations,
                 /* [UGC get-query] */
                 /* [/UGC] */
             },
@@ -55,7 +56,7 @@ export default class QuestionController {
         return parseResponse(response);
     }
 
-    public async update(data: QuestionUpdateInput, params: QueryParams = {}): Promise<Question> {
+    public async update(data: SessionUpdateInput, params: QueryParams = {}): Promise<Session> {
         if (!data) {
             throw new APIError(APIError.DATA, '"data" object is required');
         }
@@ -63,13 +64,15 @@ export default class QuestionController {
         const {
             ml,
             lang,
+            relations,
             /* [UGC update-params] */
             /* [/UGC] */
         } = params;
 
-        const response = await this.http.put(`/questions/${this.id}`, data, {
+        const response = await this.http.put(`/sessions/${this.id}`, data, {
             query: {
                 ml: lang ? false : ml,
+                relations,
                 /* [UGC update-query] */
                 /* [/UGC] */
             },
@@ -84,22 +87,11 @@ export default class QuestionController {
     }
 
     public async delete(): Promise<string> {
-        const response = await this.http.delete(`/questions/${this.id}`);
+        const response = await this.http.delete(`/sessions/${this.id}`);
 
         return parseResponse(response, { successCode: 204 });
     }
 
     /* [UGC methods] */
-    public async vote(level: number): Promise<VoteResult> {
-        if (level < 1 || level > 5) {
-            throw new APIError('INVALID-LEVEL', 'Level must be number from 1 to 5');
-        }
-
-        const response = await this.http.get(`/questions/${this.id}/vote`, {
-            query: { level },
-        });
-
-        return parseResponse(response);
-    }
     /* [/UGC] */
 }

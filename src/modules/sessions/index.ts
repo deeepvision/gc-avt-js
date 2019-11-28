@@ -9,17 +9,17 @@ import {
 /* [/UGC] */
 
 import {
-    Translation,
+    Session,
     QueryParams,
-    TranslationInput,
-    TranslationListQuery,
-    TranslationListInput,
-    TranslationList,
+    SessionInput,
+    SessionListQuery,
+    SessionListInput,
+    SessionList,
     /* [UGC dto-import] */
     /* [/UGC] */
 } from './dto';
 
-import TranslationController from './single';
+import SessionController from './single';
 
 export default class {
     private readonly http: HttpClient;
@@ -32,35 +32,38 @@ export default class {
         /* [/UGC] */
     }
 
-    public withId(id: ID): TranslationController {
+    public withId(id: ID): SessionController {
         if (typeof id !== 'string' && typeof id !== 'number') {
             throw new APIError(APIError.ID, '"id" is required');
         }
 
-        return new TranslationController(id, this.http);
+        return new SessionController(id, this.http);
     }
 
-    async list(input: TranslationListInput = {}): Promise<TranslationList> {
+    async list(input: SessionListInput = {}): Promise<SessionList> {
         const {
             limit = 10,
             offset = 0,
             sort,
             text,
+            lang,
+            ml,
             ids,
             exclude,
-            lang,
-            target,
-            ref,
+            relations,
+            complete,
+            user,
             /* [UGC list-input] */
             /* [/UGC] */
         } = input;
 
-        const query: TranslationListQuery = {
+        const query: SessionListQuery = {
             sort,
             text,
-            lang,
-            target,
-            ref,
+            ml,
+            relations,
+            complete,
+            user,
             /* [UGC list-query] */
             /* [/UGC] */
         };
@@ -76,9 +79,10 @@ export default class {
             query.exclude = exclude.join(',');
         }
 
-        const response = await this.http.get('/translations', {
+        const response = await this.http.get('/sessions', {
             query,
             headers: {
+                'Accept-Language': lang,
                 /* [UGC list-headers] */
                 /* [/UGC] */
             },
@@ -87,22 +91,28 @@ export default class {
         return parseResponse(response);
     }
 
-    async create(data: TranslationInput, params: QueryParams = {}): Promise<Translation> {
+    async create(data: SessionInput, params: QueryParams = {}): Promise<Session> {
         if (!data) {
             throw new APIError(APIError.DATA, '"data" object is required');
         }
 
         const {
+            ml,
+            lang,
+            relations,
             /* [UGC create-params] */
             /* [/UGC] */
         } = params;
 
-        const response = await this.http.post('/translations', data, {
+        const response = await this.http.post('/sessions', data, {
             query: {
+                ml: lang ? false : ml,
+                relations,
                 /* [UGC create-query] */
                 /* [/UGC] */
             },
             headers: {
+                'Accept-Language': lang,
                 /* [UGC create-headers] */
                 /* [/UGC] */
             },

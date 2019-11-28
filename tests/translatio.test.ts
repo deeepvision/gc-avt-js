@@ -6,6 +6,7 @@ import Groups from '@/modules/groups';
 import Questions from '@/modules/questions';
 import Translations from '@/modules/translations';
 import Languages from '@/modules/languages';
+import Sessions from '@/modules/sessions';
 
 describe('Translatio', () => {
     test('must throw on missed "endpoint" argument', async () => {
@@ -21,5 +22,6 @@ describe('Translatio', () => {
         expect(translatio.questions).toBeInstanceOf(Questions);
         expect(translatio.translations).toBeInstanceOf(Translations);
         expect(translatio.languages).toBeInstanceOf(Languages);
+        expect(translatio.sessions).toBeInstanceOf(Sessions);
     });
 });
