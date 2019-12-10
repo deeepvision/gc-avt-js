@@ -148,8 +148,17 @@
           "minimum": 0,
           "example": 2
         },
+        "progress": {
+          "type": "number",
+          "minimum": 0,
+          "default": 0,
+          "x-pcg": {
+            "sortable": true,
+            "internal": true
+          }
+        },
         "level": {
-          "type": "integer",
+          "type": "number",
           "minimum": 0,
           "default": 0,
           "x-pcg": {
@@ -284,7 +293,7 @@
         "rest-alias": "languages",
         "pagination": true,
         "sort": {
-          "default": "title.asc"
+          "default": "index.asc"
         }
       },
       "properties": {
@@ -309,6 +318,13 @@
           "minimum": 0,
           "x-pcg": {
             "index": true
+          }
+        },
+        "active": {
+          "type": "boolean",
+          "default": false,
+          "x-pcg": {
+            "filterable": true
           }
         }
       },
@@ -369,7 +385,7 @@
         "questions": {
           "type": "array",
           "items": {
-            "$ref": "#/definitions/m:question"
+            "type": "object"
           },
           "x-pcg": {
             "internal": true
@@ -679,6 +695,9 @@
         "index": {
           "type": "integer",
           "minimum": 0
+        },
+        "active": {
+          "type": "boolean"
         }
       },
       "required": [
@@ -701,6 +720,9 @@
         "index": {
           "type": "integer",
           "minimum": 0
+        },
+        "active": {
+          "type": "boolean"
         }
       }
     },
@@ -981,6 +1003,35 @@
         }
       }
     },
+    "/translations/{id}/approve": {
+      "get": {
+        "summary": "Approve Translation",
+        "operationId": "translation:approve",
+        "parameters": [],
+        "responses": {
+          "200": {
+            "description": "",
+            "schema": {
+              "type": "object",
+              "properties": {
+                "votes": {
+                  "type": "number",
+                  "minimum": 0
+                }
+              }
+            }
+          },
+          "default": {
+            "description": ""
+          }
+        }
+      },
+      "parameters": [
+        {
+          "$ref": "#/parameters/id"
+        }
+      ]
+    },
     "/sessions/{id}": {
       "get": {
         "summary": "Get Session",
@@ -1072,6 +1123,31 @@
           "$ref": "#/parameters/id"
         }
       ]
+    },
+    "/sessions/current": {
+      "get": {
+        "summary": "Get Current Session",
+        "operationId": "session:current",
+        "parameters": [
+          {
+            "in": "query",
+            "name": "relations",
+            "type": "boolean",
+            "default": true
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "",
+            "schema": {
+              "$ref": "#/definitions/m:session"
+            }
+          },
+          "default": {
+            "description": ""
+          }
+        }
+      }
     },
     "/sessions": {
       "get": {
@@ -1766,7 +1842,7 @@
             },
             "x-examples": {
               "application/json": {
-                "id": "HQWyJpZCI5",
+                "id": "HQWyJpZCI1",
                 "text": "Some text",
                 "reference": "Some text",
                 "line": 2,
@@ -1812,6 +1888,305 @@
           "$ref": "#/parameters/id"
         }
       ]
+    },
+    "/questions/{id}/approve": {
+      "get": {
+        "summary": "Vote (complexity)",
+        "operationId": "question:vote",
+        "parameters": [],
+        "responses": {
+          "200": {
+            "description": "",
+            "schema": {
+              "type": "object",
+              "properties": {
+                "rating": {
+                  "type": "number",
+                  "minimum": 0
+                }
+              }
+            }
+          },
+          "default": {
+            "description": ""
+          }
+        }
+      },
+      "parameters": [
+        {
+          "$ref": "#/parameters/id"
+        }
+      ]
+    },
+    "/languages/{id}": {
+      "get": {
+        "summary": "Get Language",
+        "operationId": "language:get",
+        "x-pcg": {
+          "model": "m:language",
+          "action": "get"
+        },
+        "parameters": [
+          {
+            "in": "query",
+            "name": "ml",
+            "type": "boolean"
+          },
+          {
+            "in": "header",
+            "name": "Accept-Language",
+            "type": "string"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "",
+            "schema": {
+              "$ref": "#/definitions/m:language"
+            }
+          },
+          "default": {
+            "description": ""
+          }
+        }
+      },
+      "put": {
+        "summary": "Update Language",
+        "operationId": "language:update",
+        "x-pcg": {
+          "model": "m:language",
+          "action": "update"
+        },
+        "parameters": [
+          {
+            "in": "body",
+            "name": "body",
+            "schema": {
+              "$ref": "#/definitions/m:language-update-input"
+            },
+            "x-examples": {
+              "application/json": {
+                "id": "WyJpZCIs2",
+                "title": {
+                  "en": "English"
+                },
+                "index": 0,
+                "active": false
+              }
+            }
+          },
+          {
+            "in": "query",
+            "name": "ml",
+            "type": "boolean",
+            "default": true
+          },
+          {
+            "in": "header",
+            "name": "Accept-Language",
+            "type": "string"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "",
+            "schema": {
+              "$ref": "#/definitions/m:language"
+            }
+          },
+          "default": {
+            "description": ""
+          }
+        }
+      },
+      "delete": {
+        "summary": "Delete Language",
+        "operationId": "language:delete",
+        "x-pcg": {
+          "model": "m:language",
+          "action": "delete"
+        },
+        "responses": {
+          "204": {
+            "description": "",
+            "schema": {
+              "type": "string"
+            }
+          },
+          "default": {
+            "description": ""
+          }
+        }
+      },
+      "parameters": [
+        {
+          "$ref": "#/parameters/id"
+        }
+      ]
+    },
+    "/languages": {
+      "get": {
+        "summary": "List Language",
+        "operationId": "language:list",
+        "x-pcg": {
+          "model": "m:language",
+          "action": "list"
+        },
+        "parameters": [
+          {
+            "$ref": "#/parameters/limit"
+          },
+          {
+            "$ref": "#/parameters/offset"
+          },
+          {
+            "in": "query",
+            "name": "sort",
+            "type": "string",
+            "default": "index.asc",
+            "enum": [
+              "index.asc"
+            ]
+          },
+          {
+            "$ref": "#/parameters/text"
+          },
+          {
+            "in": "query",
+            "name": "active",
+            "type": "boolean"
+          },
+          {
+            "in": "query",
+            "name": "ml",
+            "type": "boolean"
+          },
+          {
+            "in": "header",
+            "name": "Accept-Language",
+            "type": "string"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "",
+            "schema": {
+              "type": "object",
+              "additionalProperties": false,
+              "properties": {
+                "languages": {
+                  "type": "array",
+                  "items": {
+                    "$ref": "#/definitions/m:language"
+                  }
+                },
+                "meta": {
+                  "$ref": "#/definitions/sm:page-meta"
+                }
+              },
+              "required": [
+                "languages",
+                "meta"
+              ]
+            }
+          },
+          "default": {
+            "description": ""
+          }
+        }
+      },
+      "post": {
+        "summary": "Create Language",
+        "operationId": "language:create",
+        "x-pcg": {
+          "model": "m:language",
+          "action": "create"
+        },
+        "parameters": [
+          {
+            "in": "body",
+            "name": "body",
+            "schema": {
+              "$ref": "#/definitions/m:language-input"
+            },
+            "x-examples": {
+              "application/json": {
+                "id": "WyJpZCIs1",
+                "title": {
+                  "en": "English"
+                },
+                "index": 0,
+                "active": false
+              }
+            }
+          },
+          {
+            "in": "query",
+            "name": "ml",
+            "type": "boolean",
+            "default": true
+          },
+          {
+            "in": "header",
+            "name": "Accept-Language",
+            "type": "string"
+          }
+        ],
+        "responses": {
+          "201": {
+            "description": "",
+            "schema": {
+              "$ref": "#/definitions/m:language"
+            }
+          },
+          "default": {
+            "description": ""
+          }
+        }
+      }
+    },
+    "/languages/reorder": {
+      "post": {
+        "summary": "Reorder Languages",
+        "x-pcg": {
+          "model": "m:language",
+          "action": "reorder"
+        },
+        "description": "Changing an order of Languages",
+        "operationId": "language:reorder",
+        "parameters": [
+          {
+            "in": "body",
+            "name": "body",
+            "schema": {
+              "type": "object",
+              "minProperties": 2
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "",
+            "schema": {
+              "type": "object",
+              "properties": {
+                "state": {
+                  "type": "string"
+                },
+                "meta": {
+                  "minProperties": 2
+                }
+              },
+              "required": [
+                "state"
+              ]
+            }
+          },
+          "default": {
+            "description": ""
+          }
+        }
+      }
     }
   }
 }

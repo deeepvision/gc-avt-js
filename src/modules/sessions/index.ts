@@ -16,6 +16,7 @@ import {
     SessionListInput,
     SessionList,
     /* [UGC dto-import] */
+    SessionGetInput,
     /* [/UGC] */
 } from './dto';
 
@@ -122,5 +123,24 @@ export default class {
     }
 
     /* [UGC methods] */
+    public async current(input: SessionGetInput = {}): Promise<Session> {
+        const {
+            ml,
+            lang,
+            relations,
+        } = input;
+
+        const response = await this.http.get('/sessions/current', {
+            query: {
+                ml,
+                relations,
+            },
+            headers: {
+                'Accept-Language': lang,
+            },
+        });
+
+        return parseResponse(response);
+    }
     /* [/UGC] */
 }

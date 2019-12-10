@@ -51,6 +51,7 @@ export default class {
             ml,
             ids,
             exclude,
+            active,
             /* [UGC list-input] */
             /* [/UGC] */
         } = input;
@@ -59,6 +60,7 @@ export default class {
             sort,
             text,
             ml,
+            active,
             /* [UGC list-query] */
             /* [/UGC] */
         };
