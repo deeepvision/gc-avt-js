@@ -93,30 +93,5 @@ export default class SessionController {
     }
 
     /* [UGC methods] */
-    public async current(input: SessionGetInput = {}): Promise<Session> {
-        const {
-            ml,
-            lang,
-            relations,
-            /* [UGC get-input] */
-            /* [/UGC] */
-        } = input;
-
-        const response = await this.http.get('/sessions/current', {
-            query: {
-                ml,
-                relations,
-                /* [UGC get-query] */
-                /* [/UGC] */
-            },
-            headers: {
-                'Accept-Language': lang,
-                /* [UGC get-headers] */
-                /* [/UGC] */
-            },
-        });
-
-        return parseResponse(response);
-    }
     /* [/UGC] */
 }

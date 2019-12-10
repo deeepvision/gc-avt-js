@@ -5,6 +5,7 @@ export interface BaseQuestion {
     text: string;
     reference: string;
     line: number;
+    progress?: number;
     level: number;
     votes?: number;
     cleared?: boolean;

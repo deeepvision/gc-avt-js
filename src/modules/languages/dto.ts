@@ -4,18 +4,21 @@ export interface BaseLanguage {
     id: string;
     title: object;
     index?: number;
+    active?: boolean;
 }
 
 export interface BaseLanguageInput {
     id: string;
     title: object;
     index?: number;
+    active?: boolean;
 }
 
 export interface BaseLanguageUpdateInput {
     id?: string;
     title?: object;
     index?: number;
+    active?: boolean;
 }
 
 export interface Language extends BaseLanguage {
@@ -56,6 +59,7 @@ export interface LanguageListQuery {
     ml?: boolean;
     ids?: string;
     exclude?: string;
+    active?: string;
     /* [UGC list-query] */
     /* [/UGC] */
 }
