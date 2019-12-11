@@ -10,6 +10,7 @@ import {
     TranslationGetInput,
     TranslationUpdateInput,
     /* [UGC dto-import] */
+    ApproveInput,
     ApproveResult,
     /* [/UGC] */
 } from './dto';
@@ -82,8 +83,10 @@ export default class TranslationController {
     }
 
     /* [UGC methods] */
-    public async approve(): Promise<ApproveResult> {
-        const response = await this.http.get(`/translations/${this.id}/approve`);
+    public async approve({ session }): Promise<ApproveResult> {
+        const response = await this.http.get(`/translations/${this.id}/approve`, {
+            query: { session },
+        });
 
         return parseResponse(response);
     }

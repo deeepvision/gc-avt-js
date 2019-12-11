@@ -74,6 +74,10 @@ export interface TranslationList {
 }
 
 /* [UGC interfaces] */
+export interface ApproveInput {
+    session: string;
+}
+
 export interface ApproveResult {
     votes: number;
 }
