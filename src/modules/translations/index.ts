@@ -49,6 +49,7 @@ export default class {
             ids,
             exclude,
             lang,
+            type,
             target,
             ref,
             /* [UGC list-input] */
@@ -59,6 +60,7 @@ export default class {
             sort,
             text,
             lang,
+            type,
             target,
             ref,
             /* [UGC list-query] */

@@ -239,6 +239,19 @@
             "filterable": true
           }
         },
+        "type": {
+          "type": "string",
+          "minLength": 1,
+          "default": "manual",
+          "enum": [
+            "imported",
+            "auto",
+            "manual"
+          ],
+          "x-pcg": {
+            "filterable": true
+          }
+        },
         "target": {
           "type": "string",
           "minLength": 1,
@@ -278,7 +291,9 @@
         "id",
         "lang",
         "ref",
-        "text"
+        "text",
+        "type",
+        "target"
       ]
     },
     "m:language": {
@@ -648,6 +663,15 @@
           "type": "string",
           "minLength": 1
         },
+        "type": {
+          "type": "string",
+          "minLength": 1,
+          "enum": [
+            "imported",
+            "auto",
+            "manual"
+          ]
+        },
         "target": {
           "type": "string",
           "minLength": 1,
@@ -668,7 +692,9 @@
       "required": [
         "lang",
         "ref",
-        "text"
+        "text",
+        "type",
+        "target"
       ]
     },
     "m:translation-update-input": {
@@ -679,6 +705,15 @@
         "lang": {
           "type": "string",
           "minLength": 1
+        },
+        "type": {
+          "type": "string",
+          "minLength": 1,
+          "enum": [
+            "imported",
+            "auto",
+            "manual"
+          ]
         },
         "target": {
           "type": "string",
@@ -866,6 +901,7 @@
             "x-examples": {
               "application/json": {
                 "lang": "ru",
+                "type": "manual",
                 "target": "question",
                 "ref": "Some text",
                 "text": "Some text"
@@ -945,6 +981,19 @@
           },
           {
             "in": "query",
+            "name": "type",
+            "type": "array",
+            "items": {
+              "type": "string",
+              "enum": [
+                "imported",
+                "auto",
+                "manual"
+              ]
+            }
+          },
+          {
+            "in": "query",
             "name": "target",
             "type": "array",
             "items": {
@@ -1009,6 +1058,7 @@
             "x-examples": {
               "application/json": {
                 "lang": "ru",
+                "type": "manual",
                 "target": "question",
                 "ref": "Some text",
                 "text": "Some text"
@@ -1045,16 +1095,19 @@
                   "minimum": 0
                 },
                 "session": {
-                  "approved": {
-                    "type": "number",
-                    "minimum": 0
-                  },
-                  "total": {
-                    "type": "number",
-                    "minimum": 0
-                  },
-                  "complete": {
-                    "type": "boolean"
+                  "type": "object",
+                  "properties": {
+                    "approved": {
+                      "type": "number",
+                      "minimum": 0
+                    },
+                    "total": {
+                      "type": "number",
+                      "minimum": 0
+                    },
+                    "complete": {
+                      "type": "boolean"
+                    }
                   }
                 }
               }
