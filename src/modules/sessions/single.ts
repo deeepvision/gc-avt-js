@@ -32,8 +32,6 @@ export default class SessionController {
 
     public async get(input: SessionGetInput = {}): Promise<Session> {
         const {
-            ml,
-            lang,
             relations,
             /* [UGC get-input] */
             /* [/UGC] */
@@ -41,13 +39,11 @@ export default class SessionController {
 
         const response = await this.http.get(`/sessions/${this.id}`, {
             query: {
-                ml,
                 relations,
                 /* [UGC get-query] */
                 /* [/UGC] */
             },
             headers: {
-                'Accept-Language': lang,
                 /* [UGC get-headers] */
                 /* [/UGC] */
             },
@@ -62,8 +58,6 @@ export default class SessionController {
         }
 
         const {
-            ml,
-            lang,
             relations,
             /* [UGC update-params] */
             /* [/UGC] */
@@ -71,13 +65,11 @@ export default class SessionController {
 
         const response = await this.http.put(`/sessions/${this.id}`, data, {
             query: {
-                ml: lang ? false : ml,
                 relations,
                 /* [UGC update-query] */
                 /* [/UGC] */
             },
             headers: {
-                'Accept-Language': lang,
                 /* [UGC update-headers] */
                 /* [/UGC] */
             },

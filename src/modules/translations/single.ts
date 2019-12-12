@@ -10,6 +10,7 @@ import {
     TranslationGetInput,
     TranslationUpdateInput,
     /* [UGC dto-import] */
+    ApproveInput,
     ApproveResult,
     /* [/UGC] */
 } from './dto';

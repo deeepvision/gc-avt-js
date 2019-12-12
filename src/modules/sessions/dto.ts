@@ -3,6 +3,9 @@
 export interface BaseSession {
     id: string;
     complete?: boolean;
+    language?: string;
+    progress?: object;
+    votedQuestions?: Array<string>;
     dateCreated?: string;
     user?: object;
     questions?: Array<object>;
@@ -10,11 +13,13 @@ export interface BaseSession {
 
 export interface BaseSessionInput {
     complete?: boolean;
+    language?: string;
     userId?: string;
 }
 
 export interface BaseSessionUpdateInput {
     complete?: boolean;
+    language?: string;
     userId?: string;
 }
 
@@ -34,8 +39,6 @@ export interface SessionUpdateInput extends BaseSessionUpdateInput {
 }
 
 export interface QueryParams {
-    ml?: boolean;
-    lang?: string;
     relations?: boolean;
 }
 
@@ -49,7 +52,6 @@ export interface SessionListQuery {
     offset?: number;
     sort?: string;
     text?: string;
-    ml?: boolean;
     ids?: string;
     exclude?: string;
     relations?: boolean;
@@ -60,7 +62,6 @@ export interface SessionListQuery {
 }
 
 export interface SessionListInput extends SessionListQuery {
-    lang?: string;
 }
 
 export interface SessionList {
