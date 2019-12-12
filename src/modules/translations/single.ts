@@ -83,10 +83,8 @@ export default class TranslationController {
     }
 
     /* [UGC methods] */
-    public async approve({ session }): Promise<ApproveResult> {
-        const response = await this.http.get(`/translations/${this.id}/approve`, {
-            query: { session },
-        });
+    public async approve(): Promise<ApproveResult> {
+        const response = await this.http.get(`/translations/${this.id}/approve`);
 
         return parseResponse(response);
     }

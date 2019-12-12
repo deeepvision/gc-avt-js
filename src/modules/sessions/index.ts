@@ -47,8 +47,6 @@ export default class {
             offset = 0,
             sort,
             text,
-            lang,
-            ml,
             ids,
             exclude,
             relations,
@@ -61,7 +59,6 @@ export default class {
         const query: SessionListQuery = {
             sort,
             text,
-            ml,
             relations,
             complete,
             user,
@@ -83,7 +80,6 @@ export default class {
         const response = await this.http.get('/sessions', {
             query,
             headers: {
-                'Accept-Language': lang,
                 /* [UGC list-headers] */
                 /* [/UGC] */
             },
@@ -98,8 +94,6 @@ export default class {
         }
 
         const {
-            ml,
-            lang,
             relations,
             /* [UGC create-params] */
             /* [/UGC] */
@@ -107,13 +101,11 @@ export default class {
 
         const response = await this.http.post('/sessions', data, {
             query: {
-                ml: lang ? false : ml,
                 relations,
                 /* [UGC create-query] */
                 /* [/UGC] */
             },
             headers: {
-                'Accept-Language': lang,
                 /* [UGC create-headers] */
                 /* [/UGC] */
             },
@@ -123,22 +115,8 @@ export default class {
     }
 
     /* [UGC methods] */
-    public async current(input: SessionGetInput = {}): Promise<Session> {
-        const {
-            ml,
-            lang,
-            relations,
-        } = input;
-
-        const response = await this.http.get('/sessions/current', {
-            query: {
-                ml,
-                relations,
-            },
-            headers: {
-                'Accept-Language': lang,
-            },
-        });
+    public async current(): Promise<Session> {
+        const response = await this.http.get('/sessions/current');
 
         return parseResponse(response);
     }

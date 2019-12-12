@@ -149,11 +149,8 @@
           "example": 2
         },
         "progress": {
-          "type": "number",
-          "minimum": 0,
-          "default": 0,
+          "type": "object",
           "x-pcg": {
-            "sortable": true,
             "internal": true
           }
         },
@@ -338,6 +335,7 @@
       "title": "Session",
       "additionalProperties": false,
       "x-pcg": {
+        "multilang": false,
         "rest-alias": "sessions",
         "pagination": true,
         "relations": {
@@ -366,6 +364,26 @@
           "default": false,
           "x-pcg": {
             "filterable": true
+          }
+        },
+        "language": {
+          "type": "string",
+          "example": "ru",
+          "minLength": 1
+        },
+        "progress": {
+          "type": "object",
+          "x-pcg": {
+            "internal": true
+          }
+        },
+        "votedQuestions": {
+          "type": "array",
+          "items": {
+            "type": "string"
+          },
+          "x-pcg": {
+            "internal": true
           }
         },
         "dateCreated": {
@@ -734,6 +752,10 @@
         "complete": {
           "type": "boolean"
         },
+        "language": {
+          "type": "string",
+          "minLength": 1
+        },
         "userId": {
           "type": "string",
           "minLength": 1
@@ -747,6 +769,10 @@
       "properties": {
         "complete": {
           "type": "boolean"
+        },
+        "language": {
+          "type": "string",
+          "minLength": 1
         },
         "userId": {
           "type": "string",
@@ -1017,6 +1043,19 @@
                 "votes": {
                   "type": "number",
                   "minimum": 0
+                },
+                "session": {
+                  "approved": {
+                    "type": "number",
+                    "minimum": 0
+                  },
+                  "total": {
+                    "type": "number",
+                    "minimum": 0
+                  },
+                  "complete": {
+                    "type": "boolean"
+                  }
                 }
               }
             }
@@ -1076,7 +1115,8 @@
             },
             "x-examples": {
               "application/json": {
-                "complete": false
+                "complete": false,
+                "language": "ru"
               }
             }
           },
@@ -1238,7 +1278,8 @@
             },
             "x-examples": {
               "application/json": {
-                "complete": false
+                "complete": false,
+                "language": "ru"
               }
             }
           },
@@ -1889,11 +1930,18 @@
         }
       ]
     },
-    "/questions/{id}/approve": {
+    "/questions/{id}/vote": {
       "get": {
         "summary": "Vote (complexity)",
         "operationId": "question:vote",
-        "parameters": [],
+        "parameters": [
+          {
+            "in": "query",
+            "name": "level",
+            "type": "number",
+            "required": true
+          }
+        ],
         "responses": {
           "200": {
             "description": "",
