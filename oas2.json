@@ -101,6 +101,22 @@
         "projectId": {
           "type": "string",
           "minLength": 1
+        },
+        "statistic": {
+          "type": "object",
+          "properties": {
+            "totalQuastions": {
+              "type": "number",
+              "minimum": 0
+            },
+            "completedQuestions": {
+              "type": "number",
+              "minimum": 0
+            }
+          },
+          "x-pcg": {
+            "internal": true
+          }
         }
       },
       "required": [
@@ -290,10 +306,10 @@
       "required": [
         "id",
         "lang",
-        "ref",
-        "text",
         "type",
-        "target"
+        "target",
+        "ref",
+        "text"
       ]
     },
     "m:language": {
@@ -427,6 +443,73 @@
       },
       "required": [
         "id"
+      ]
+    },
+    "m:event": {
+      "type": "object",
+      "title": "Event",
+      "additionalProperties": false,
+      "x-pcg": {
+        "rest-alias": "events",
+        "pagination": true,
+        "sort": {
+          "default": "dateCreated.asc"
+        },
+        "relations": {
+          "belongsTo": [
+            {
+              "remote": true,
+              "property": "user",
+              "as": "model"
+            }
+          ]
+        }
+      },
+      "properties": {
+        "id": {
+          "type": "string",
+          "minLength": 1,
+          "x-pcg": {
+            "generated": true
+          }
+        },
+        "dateCreated": {
+          "type": "string",
+          "format": "date-time",
+          "x-pcg": {
+            "sortable": true
+          }
+        },
+        "name": {
+          "type": "string",
+          "description": "Name of Event",
+          "x-pcg": {
+            "filterable": true
+          },
+          "example": "translation-add",
+          "enum": [
+            "translation-add",
+            "translation-approve"
+          ]
+        },
+        "props": {
+          "type": "object",
+          "example": {
+            "id": "23rksl34"
+          }
+        },
+        "user": {
+          "x-pcg": {
+            "filterable": true
+          },
+          "type": "object"
+        }
+      },
+      "required": [
+        "id",
+        "dateCreated",
+        "name",
+        "props"
       ]
     },
     "sm:page-meta": {
@@ -691,10 +774,10 @@
       },
       "required": [
         "lang",
-        "ref",
-        "text",
         "type",
-        "target"
+        "target",
+        "ref",
+        "text"
       ]
     },
     "m:translation-update-input": {
@@ -808,6 +891,54 @@
         "language": {
           "type": "string",
           "minLength": 1
+        },
+        "userId": {
+          "type": "string",
+          "minLength": 1
+        }
+      }
+    },
+    "m:event-input": {
+      "type": "object",
+      "title": "Event (Input)",
+      "additionalProperties": false,
+      "properties": {
+        "name": {
+          "type": "string",
+          "description": "Name of Event",
+          "enum": [
+            "translation-add",
+            "translation-approve"
+          ]
+        },
+        "props": {
+          "type": "object"
+        },
+        "userId": {
+          "type": "string",
+          "minLength": 1
+        }
+      },
+      "required": [
+        "name",
+        "props"
+      ]
+    },
+    "m:event-update-input": {
+      "type": "object",
+      "title": "Event (Update Input)",
+      "additionalProperties": false,
+      "properties": {
+        "name": {
+          "type": "string",
+          "description": "Name of Event",
+          "enum": [
+            "translation-add",
+            "translation-approve"
+          ]
+        },
+        "props": {
+          "type": "object"
         },
         "userId": {
           "type": "string",
@@ -1876,7 +2007,7 @@
             },
             "x-examples": {
               "application/json": {
-                "id": "HQWyJpZCI4",
+                "id": "HQWyJpZCI2",
                 "text": "Some text",
                 "reference": "Some text",
                 "line": 2,
@@ -2280,6 +2411,322 @@
               },
               "required": [
                 "state"
+              ]
+            }
+          },
+          "default": {
+            "description": ""
+          }
+        }
+      }
+    },
+    "/events/{id}": {
+      "get": {
+        "summary": "Get Event",
+        "operationId": "event:get",
+        "x-pcg": {
+          "model": "m:event",
+          "action": "get"
+        },
+        "parameters": [
+          {
+            "in": "query",
+            "name": "relations",
+            "type": "boolean",
+            "default": true
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "",
+            "schema": {
+              "$ref": "#/definitions/m:event"
+            }
+          },
+          "default": {
+            "description": ""
+          }
+        }
+      },
+      "put": {
+        "summary": "Update Event",
+        "operationId": "event:update",
+        "x-pcg": {
+          "model": "m:event",
+          "action": "update"
+        },
+        "parameters": [
+          {
+            "in": "body",
+            "name": "body",
+            "schema": {
+              "$ref": "#/definitions/m:event-update-input"
+            },
+            "x-examples": {
+              "application/json": {
+                "name": "translation-add",
+                "props": {
+                  "id": "23rksl34"
+                }
+              }
+            }
+          },
+          {
+            "in": "query",
+            "name": "relations",
+            "type": "boolean",
+            "default": true
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "",
+            "schema": {
+              "$ref": "#/definitions/m:event"
+            }
+          },
+          "default": {
+            "description": ""
+          }
+        }
+      },
+      "delete": {
+        "summary": "Delete Event",
+        "operationId": "event:delete",
+        "x-pcg": {
+          "model": "m:event",
+          "action": "delete"
+        },
+        "responses": {
+          "204": {
+            "description": "",
+            "schema": {
+              "type": "string"
+            }
+          },
+          "default": {
+            "description": ""
+          }
+        }
+      },
+      "parameters": [
+        {
+          "$ref": "#/parameters/id"
+        }
+      ]
+    },
+    "/events": {
+      "get": {
+        "summary": "List Event",
+        "operationId": "event:list",
+        "x-pcg": {
+          "model": "m:event",
+          "action": "list"
+        },
+        "parameters": [
+          {
+            "in": "query",
+            "name": "relations",
+            "type": "boolean",
+            "default": false
+          },
+          {
+            "$ref": "#/parameters/limit"
+          },
+          {
+            "$ref": "#/parameters/offset"
+          },
+          {
+            "in": "query",
+            "name": "sort",
+            "type": "string",
+            "default": "dateCreated.asc",
+            "enum": [
+              "dateCreated.asc",
+              "dateCreated.desc"
+            ]
+          },
+          {
+            "in": "query",
+            "name": "name",
+            "type": "array",
+            "items": {
+              "type": "string",
+              "enum": [
+                "translation-add",
+                "translation-approve"
+              ]
+            }
+          },
+          {
+            "in": "query",
+            "name": "user",
+            "type": "array",
+            "items": {
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "",
+            "schema": {
+              "type": "object",
+              "additionalProperties": false,
+              "properties": {
+                "events": {
+                  "type": "array",
+                  "items": {
+                    "$ref": "#/definitions/m:event"
+                  }
+                },
+                "meta": {
+                  "$ref": "#/definitions/sm:page-meta"
+                }
+              },
+              "required": [
+                "events",
+                "meta"
+              ]
+            }
+          },
+          "default": {
+            "description": ""
+          }
+        }
+      },
+      "post": {
+        "summary": "Create Event",
+        "operationId": "event:create",
+        "x-pcg": {
+          "model": "m:event",
+          "action": "create"
+        },
+        "parameters": [
+          {
+            "in": "body",
+            "name": "body",
+            "schema": {
+              "$ref": "#/definitions/m:event-input"
+            },
+            "x-examples": {
+              "application/json": {
+                "name": "translation-add",
+                "props": {
+                  "id": "23rksl34"
+                }
+              }
+            }
+          },
+          {
+            "in": "query",
+            "name": "relations",
+            "type": "boolean",
+            "default": true
+          }
+        ],
+        "responses": {
+          "201": {
+            "description": "",
+            "schema": {
+              "$ref": "#/definitions/m:event"
+            }
+          },
+          "default": {
+            "description": ""
+          }
+        }
+      }
+    },
+    "/events/activity": {
+      "get": {
+        "summary": "Events: Get Activity",
+        "operationId": "events:get-activity",
+        "parameters": [
+          {
+            "in": "query",
+            "name": "from",
+            "type": "string"
+          },
+          {
+            "in": "query",
+            "name": "to",
+            "type": "string"
+          },
+          {
+            "in": "query",
+            "name": "user",
+            "type": "string"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "",
+            "schema": {
+              "type": "object",
+              "additionalProperties": false,
+              "properties": {
+                "days": {
+                  "type": "object"
+                },
+                "meta": {
+                  "type": "object",
+                  "properties": {
+                    "total": {
+                      "type": "number"
+                    },
+                    "from": {
+                      "type": "string"
+                    },
+                    "to": {
+                      "type": "string"
+                    }
+                  },
+                  "required": [
+                    "total"
+                  ]
+                }
+              },
+              "required": [
+                "days",
+                "meta"
+              ]
+            }
+          },
+          "default": {
+            "description": ""
+          }
+        }
+      }
+    },
+    "/events/statistic": {
+      "get": {
+        "summary": "Events: Get Statistic",
+        "operationId": "events:get-statistic",
+        "parameters": [
+          {
+            "in": "query",
+            "name": "user",
+            "type": "string"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "",
+            "schema": {
+              "type": "object",
+              "additionalProperties": false,
+              "properties": {
+                "approvedQuestions": {
+                  "type": "integer"
+                },
+                "addedQuestions": {
+                  "type": "integer"
+                }
+              },
+              "required": [
+                "approvedQuestions",
+                "addedQuestions"
               ]
             }
           },

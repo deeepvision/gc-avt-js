@@ -4,6 +4,7 @@ export interface BaseGroup {
     id: string;
     name: object;
     projectId?: string;
+    statistic?: object;
 }
 
 export interface BaseGroupUpdateInput {
