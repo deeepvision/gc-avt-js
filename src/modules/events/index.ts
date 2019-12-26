@@ -131,7 +131,7 @@ export default class {
     }
 
     public async getGroupsActivity(): Promise<GroupsActivity> {
-        const response = await this.http.get('/events//events/activity/groups');
+        const response = await this.http.get('/events/activity/groups');
 
         return parseResponse(response);
     }
