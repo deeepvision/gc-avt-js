@@ -390,7 +390,7 @@
             "generated": true
           }
         },
-        "complete": {
+        "finished": {
           "type": "boolean",
           "default": false,
           "x-pcg": {
@@ -867,7 +867,7 @@
       "title": "Session (Input)",
       "additionalProperties": false,
       "properties": {
-        "complete": {
+        "finished": {
           "type": "boolean"
         },
         "language": {
@@ -885,7 +885,7 @@
       "title": "Session (Update Input)",
       "additionalProperties": false,
       "properties": {
-        "complete": {
+        "finished": {
           "type": "boolean"
         },
         "language": {
@@ -1236,7 +1236,7 @@
                       "type": "number",
                       "minimum": 0
                     },
-                    "complete": {
+                    "finished": {
                       "type": "boolean"
                     }
                   }
@@ -1299,7 +1299,7 @@
             },
             "x-examples": {
               "application/json": {
-                "complete": false,
+                "finished": false,
                 "language": "ru"
               }
             }
@@ -1406,7 +1406,7 @@
           },
           {
             "in": "query",
-            "name": "complete",
+            "name": "finished",
             "type": "boolean"
           },
           {
@@ -1462,7 +1462,7 @@
             },
             "x-examples": {
               "application/json": {
-                "complete": false,
+                "finished": false,
                 "language": "ru"
               }
             }
@@ -2638,21 +2638,11 @@
         }
       }
     },
-    "/events/activity": {
+    "/events/activity/groups": {
       "get": {
-        "summary": "Events: Get Activity",
-        "operationId": "events:get-activity",
+        "summary": "Events: Get Groups Activity",
+        "operationId": "events:get-groups-activity",
         "parameters": [
-          {
-            "in": "query",
-            "name": "from",
-            "type": "string"
-          },
-          {
-            "in": "query",
-            "name": "to",
-            "type": "string"
-          },
           {
             "in": "query",
             "name": "user",
@@ -2666,7 +2656,7 @@
               "type": "object",
               "additionalProperties": false,
               "properties": {
-                "days": {
+                "groups": {
                   "type": "object"
                 },
                 "meta": {
@@ -2674,12 +2664,6 @@
                   "properties": {
                     "total": {
                       "type": "number"
-                    },
-                    "from": {
-                      "type": "string"
-                    },
-                    "to": {
-                      "type": "string"
                     }
                   },
                   "required": [
@@ -2717,16 +2701,16 @@
               "type": "object",
               "additionalProperties": false,
               "properties": {
-                "approvedQuestions": {
+                "approvedTranslations": {
                   "type": "integer"
                 },
-                "addedQuestions": {
+                "addedTranslations": {
                   "type": "integer"
                 }
               },
               "required": [
-                "approvedQuestions",
-                "addedQuestions"
+                "approvedTranslations",
+                "addedTranslations"
               ]
             }
           },

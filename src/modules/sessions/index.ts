@@ -16,7 +16,7 @@ import {
     SessionListInput,
     SessionList,
     /* [UGC dto-import] */
-    SessionGetInput,
+    SessionExistsResult,
     /* [/UGC] */
 } from './dto';
 
@@ -50,7 +50,7 @@ export default class {
             ids,
             exclude,
             relations,
-            complete,
+            finished,
             user,
             /* [UGC list-input] */
             /* [/UGC] */
@@ -60,7 +60,7 @@ export default class {
             sort,
             text,
             relations,
-            complete,
+            finished,
             user,
             /* [UGC list-query] */
             /* [/UGC] */
@@ -117,6 +117,18 @@ export default class {
     /* [UGC methods] */
     public async current(): Promise<Session> {
         const response = await this.http.get('/sessions/current');
+
+        return parseResponse(response);
+    }
+
+    public async finish(): Promise<Session> {
+        const response = await this.http.get('/sessions/current/finish');
+
+        return parseResponse(response);
+    }
+
+    public async exists(): Promise<SessionExistsResult> {
+        const response = await this.http.get('/sessions/current/exists');
 
         return parseResponse(response);
     }
