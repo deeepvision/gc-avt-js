@@ -6,6 +6,7 @@ import {
     ID,
 } from '@deepvision/api-kit';
 /* [UGC import] */
+import CurrentSessionController from './current';
 /* [/UGC] */
 
 import {
@@ -16,7 +17,6 @@ import {
     SessionListInput,
     SessionList,
     /* [UGC dto-import] */
-    SessionExistsResult,
     /* [/UGC] */
 } from './dto';
 
@@ -25,11 +25,13 @@ import SessionController from './single';
 export default class {
     private readonly http: HttpClient;
     /* [UGC declaration] */
+    private readonly current: CurrentSessionController;
     /* [/UGC] */
 
     constructor(http: HttpClient) {
         this.http = http;
         /* [UGC constructor] */
+        this.current = new CurrentSessionController(this.http);
         /* [/UGC] */
     }
 
@@ -113,24 +115,4 @@ export default class {
 
         return parseResponse(response, { successCode: 201 });
     }
-
-    /* [UGC methods] */
-    public async current(): Promise<Session> {
-        const response = await this.http.get('/sessions/current');
-
-        return parseResponse(response);
-    }
-
-    public async finish(): Promise<Session> {
-        const response = await this.http.get('/sessions/current/finish');
-
-        return parseResponse(response);
-    }
-
-    public async exists(): Promise<SessionExistsResult> {
-        const response = await this.http.get('/sessions/current/exists');
-
-        return parseResponse(response);
-    }
-    /* [/UGC] */
 }
