@@ -2,7 +2,7 @@
 
 export interface BaseSession {
     id: string;
-    complete?: boolean;
+    finished?: boolean;
     language?: string;
     progress?: object;
     votedQuestions?: Array<string>;
@@ -12,13 +12,13 @@ export interface BaseSession {
 }
 
 export interface BaseSessionInput {
-    complete?: boolean;
+    finished?: boolean;
     language?: string;
     userId?: string;
 }
 
 export interface BaseSessionUpdateInput {
-    complete?: boolean;
+    finished?: boolean;
     language?: string;
     userId?: string;
 }
@@ -55,7 +55,7 @@ export interface SessionListQuery {
     ids?: string;
     exclude?: string;
     relations?: boolean;
-    complete?: string;
+    finished?: string;
     user?: string;
     /* [UGC list-query] */
     /* [/UGC] */
@@ -75,4 +75,7 @@ export interface SessionList {
 }
 
 /* [UGC interfaces] */
+export interface SessionExistsResult {
+    exists: boolean;
+}
 /* [/UGC] */
