@@ -6,64 +6,58 @@ import {
     ID,
 } from '@deepvision/api-kit';
 /* [UGC import] */
-import CurrentSessionController from './current';
 /* [/UGC] */
 
 import {
-    Session,
+    ExportProcess,
     QueryParams,
-    SessionInput,
-    SessionListQuery,
-    SessionListInput,
-    SessionList,
+    ExportProcessInput,
+    ExportProcessListQuery,
+    ExportProcessListInput,
+    ExportProcessList,
     /* [UGC dto-import] */
     /* [/UGC] */
 } from './dto';
 
-import SessionController from './single';
+import ExportProcessController from './single';
 
 export default class {
     private readonly http: HttpClient;
     /* [UGC declaration] */
-    private readonly current: CurrentSessionController;
     /* [/UGC] */
 
     constructor(http: HttpClient) {
         this.http = http;
         /* [UGC constructor] */
-        this.current = new CurrentSessionController(this.http);
         /* [/UGC] */
     }
 
-    public withId(id: ID): SessionController {
+    public withId(id: ID): ExportProcessController {
         if (typeof id !== 'string' && typeof id !== 'number') {
             throw new APIError(APIError.ID, '"id" is required');
         }
 
-        return new SessionController(id, this.http);
+        return new ExportProcessController(id, this.http);
     }
 
-    async list(input: SessionListInput = {}): Promise<SessionList> {
+    async list(input: ExportProcessListInput = {}): Promise<ExportProcessList> {
         const {
             limit = 10,
             offset = 0,
             sort,
             text,
+            lang,
+            ml,
             ids,
             exclude,
-            relations,
-            finished,
-            user,
             /* [UGC list-input] */
             /* [/UGC] */
         } = input;
 
-        const query: SessionListQuery = {
+        const query: ExportProcessListQuery = {
             sort,
             text,
-            relations,
-            finished,
-            user,
+            ml,
             /* [UGC list-query] */
             /* [/UGC] */
         };
@@ -79,9 +73,10 @@ export default class {
             query.exclude = exclude.join(',');
         }
 
-        const response = await this.http.get('/sessions', {
+        const response = await this.http.get('/export-processes', {
             query,
             headers: {
+                'Accept-Language': lang,
                 /* [UGC list-headers] */
                 /* [/UGC] */
             },
@@ -90,24 +85,26 @@ export default class {
         return parseResponse(response);
     }
 
-    async create(data: SessionInput, params: QueryParams = {}): Promise<Session> {
+    async create(data: ExportProcessInput, params: QueryParams = {}): Promise<ExportProcess> {
         if (!data) {
             throw new APIError(APIError.DATA, '"data" object is required');
         }
 
         const {
-            relations,
+            ml,
+            lang,
             /* [UGC create-params] */
             /* [/UGC] */
         } = params;
 
-        const response = await this.http.post('/sessions', data, {
+        const response = await this.http.post('/export-processes', data, {
             query: {
-                relations,
+                ml: lang ? false : ml,
                 /* [UGC create-query] */
                 /* [/UGC] */
             },
             headers: {
+                'Accept-Language': lang,
                 /* [UGC create-headers] */
                 /* [/UGC] */
             },

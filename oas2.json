@@ -512,6 +512,47 @@
         "props"
       ]
     },
+    "m:export-process": {
+      "type": "object",
+      "title": "Export Process",
+      "additionalProperties": false,
+      "x-pcg": {
+        "rest-alias": "export-processes",
+        "pagination": true,
+        "sort": {
+          "default": "dateCreated.asc"
+        }
+      },
+      "properties": {
+        "id": {
+          "type": "string",
+          "minLength": 1,
+          "x-pcg": {
+            "generated": true
+          }
+        },
+        "dateCreated": {
+          "type": "string",
+          "format": "date-time",
+          "x-pcg": {
+            "sortable": true
+          }
+        },
+        "status": {
+          "type": "string",
+          "default": "active",
+          "enum": [
+            "active",
+            "done",
+            "failed"
+          ]
+        }
+      },
+      "required": [
+        "id",
+        "dateCreated"
+      ]
+    },
     "sm:page-meta": {
       "type": "object",
       "title": "Shared: Page Meta",
@@ -945,6 +986,36 @@
           "minLength": 1
         }
       }
+    },
+    "m:export-process-input": {
+      "type": "object",
+      "title": "Export Process (Input)",
+      "additionalProperties": false,
+      "properties": {
+        "status": {
+          "type": "string",
+          "enum": [
+            "active",
+            "done",
+            "failed"
+          ]
+        }
+      }
+    },
+    "m:export-process-update-input": {
+      "type": "object",
+      "title": "Export Process (Update Input)",
+      "additionalProperties": false,
+      "properties": {
+        "status": {
+          "type": "string",
+          "enum": [
+            "active",
+            "done",
+            "failed"
+          ]
+        }
+      }
     }
   },
   "parameters": {
@@ -1365,6 +1436,47 @@
             "description": "",
             "schema": {
               "$ref": "#/definitions/m:session"
+            }
+          },
+          "default": {
+            "description": ""
+          }
+        }
+      }
+    },
+    "/sessions/current/finish": {
+      "get": {
+        "summary": "Finish Current Session",
+        "operationId": "session:finish-current",
+        "parameters": [],
+        "responses": {
+          "200": {
+            "description": "",
+            "schema": {
+              "$ref": "#/definitions/m:session"
+            }
+          },
+          "default": {
+            "description": ""
+          }
+        }
+      }
+    },
+    "/sessions/current/exists": {
+      "get": {
+        "summary": "Checks Current Session is exists",
+        "operationId": "session:current-exists",
+        "parameters": [],
+        "responses": {
+          "200": {
+            "description": "",
+            "schema": {
+              "type": "object",
+              "properties": {
+                "exists": {
+                  "type": "boolean"
+                }
+              }
             }
           },
           "default": {
@@ -2712,6 +2824,173 @@
                 "approvedTranslations",
                 "addedTranslations"
               ]
+            }
+          },
+          "default": {
+            "description": ""
+          }
+        }
+      }
+    },
+    "/export-processes/{id}": {
+      "get": {
+        "summary": "Get Export Process",
+        "operationId": "export-process:get",
+        "x-pcg": {
+          "model": "m:export-process",
+          "action": "get"
+        },
+        "parameters": [],
+        "responses": {
+          "200": {
+            "description": "",
+            "schema": {
+              "$ref": "#/definitions/m:export-process"
+            }
+          },
+          "default": {
+            "description": ""
+          }
+        }
+      },
+      "put": {
+        "summary": "Update Export Process",
+        "operationId": "export-process:update",
+        "x-pcg": {
+          "model": "m:export-process",
+          "action": "update"
+        },
+        "parameters": [
+          {
+            "in": "body",
+            "name": "body",
+            "schema": {
+              "$ref": "#/definitions/m:export-process-update-input"
+            },
+            "x-examples": {
+              "application/json": {
+                "status": "active"
+              }
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "",
+            "schema": {
+              "$ref": "#/definitions/m:export-process"
+            }
+          },
+          "default": {
+            "description": ""
+          }
+        }
+      },
+      "delete": {
+        "summary": "Delete Export Process",
+        "operationId": "export-process:delete",
+        "x-pcg": {
+          "model": "m:export-process",
+          "action": "delete"
+        },
+        "responses": {
+          "204": {
+            "description": "",
+            "schema": {
+              "type": "string"
+            }
+          },
+          "default": {
+            "description": ""
+          }
+        }
+      },
+      "parameters": [
+        {
+          "$ref": "#/parameters/id"
+        }
+      ]
+    },
+    "/export-processes": {
+      "get": {
+        "summary": "List Export Process",
+        "operationId": "export-process:list",
+        "x-pcg": {
+          "model": "m:export-process",
+          "action": "list"
+        },
+        "parameters": [
+          {
+            "$ref": "#/parameters/limit"
+          },
+          {
+            "$ref": "#/parameters/offset"
+          },
+          {
+            "in": "query",
+            "name": "sort",
+            "type": "string",
+            "default": "dateCreated.asc",
+            "enum": [
+              "dateCreated.asc",
+              "dateCreated.desc"
+            ]
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "",
+            "schema": {
+              "type": "object",
+              "additionalProperties": false,
+              "properties": {
+                "exportProcesses": {
+                  "type": "array",
+                  "items": {
+                    "$ref": "#/definitions/m:export-process"
+                  }
+                },
+                "meta": {
+                  "$ref": "#/definitions/sm:page-meta"
+                }
+              },
+              "required": [
+                "exportProcesses",
+                "meta"
+              ]
+            }
+          },
+          "default": {
+            "description": ""
+          }
+        }
+      },
+      "post": {
+        "summary": "Create Export Process",
+        "operationId": "export-process:create",
+        "x-pcg": {
+          "model": "m:export-process",
+          "action": "create"
+        },
+        "parameters": [
+          {
+            "in": "body",
+            "name": "body",
+            "schema": {
+              "$ref": "#/definitions/m:export-process-input"
+            },
+            "x-examples": {
+              "application/json": {
+                "status": "active"
+              }
+            }
+          }
+        ],
+        "responses": {
+          "201": {
+            "description": "",
+            "schema": {
+              "$ref": "#/definitions/m:export-process"
             }
           },
           "default": {

@@ -8,6 +8,7 @@ import Translations from '@/modules/translations';
 import Languages from '@/modules/languages';
 import Sessions from '@/modules/sessions';
 import Events from '@/modules/events';
+import ExportProcesses from '@/modules/export-processes';
 
 describe('Translatio', () => {
     test('must throw on missed "endpoint" argument', async () => {
@@ -25,5 +26,6 @@ describe('Translatio', () => {
         expect(translatio.languages).toBeInstanceOf(Languages);
         expect(translatio.sessions).toBeInstanceOf(Sessions);
         expect(translatio.events).toBeInstanceOf(Events);
+        expect(translatio.exportProcesses).toBeInstanceOf(ExportProcesses);
     });
 });

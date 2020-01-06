@@ -22,6 +22,7 @@ class API {
     languages: Modules.Languages;
     sessions: Modules.Sessions;
     events: Modules.Events;
+    exportProcesses: Modules.ExportProcesses;
 
     /* [UGC modules] */
     /* [/UGC] */
@@ -45,6 +46,7 @@ class API {
         this.languages = new Modules.Languages(this.http);
         this.sessions = new Modules.Sessions(this.http);
         this.events = new Modules.Events(this.http);
+        this.exportProcesses = new Modules.ExportProcesses(this.http);
     }
 }
 
