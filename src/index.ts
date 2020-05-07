@@ -1,20 +1,22 @@
 import HttpClient from '@deepvision/http-client';
-import { APIError } from '@deepvision/api-kit';
+import { APIError, Webhooks } from '@deepvision/api-kit';
 import * as Modules from './modules';
 /* [UGC import] */
 /* [/UGC] */
 
 export interface Config {
-    endpoint: string,
-    getAccessToken?: () => string,
-};
+    endpoint: string;
+    getAccessToken?: () => Promise<string>;
+}
 
 class API {
     http: HttpClient;
+    config: Config;
 
     /* [UGC actions] */
     /* [/UGC] */
 
+    webhooks: Webhooks;
     projects: Modules.Projects;
     groups: Modules.Groups;
     questions: Modules.Questions;
@@ -33,12 +35,16 @@ class API {
         }
 
         this.http = new HttpClient(config);
+
+
         /* [UGC create-actions] */
         /* [/UGC] */
 
         /* [UGC create-modules] */
         /* [/UGC] */
 
+        this.config = config;
+        this.webhooks = new Webhooks(this.http);
         this.projects = new Modules.Projects(this.http);
         this.groups = new Modules.Groups(this.http);
         this.questions = new Modules.Questions(this.http);
@@ -48,6 +54,7 @@ class API {
         this.events = new Modules.Events(this.http);
         this.exportProcesses = new Modules.ExportProcesses(this.http);
     }
+
 }
 
 export default API;

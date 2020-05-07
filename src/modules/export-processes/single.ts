@@ -32,20 +32,16 @@ export default class ExportProcessController {
 
     public async get(input: ExportProcessGetInput = {}): Promise<ExportProcess> {
         const {
-            ml,
-            lang,
             /* [UGC get-input] */
             /* [/UGC] */
         } = input;
 
         const response = await this.http.get(`/export-processes/${this.id}`, {
             query: {
-                ml,
                 /* [UGC get-query] */
                 /* [/UGC] */
             },
             headers: {
-                'Accept-Language': lang,
                 /* [UGC get-headers] */
                 /* [/UGC] */
             },
@@ -60,20 +56,16 @@ export default class ExportProcessController {
         }
 
         const {
-            ml,
-            lang,
             /* [UGC update-params] */
             /* [/UGC] */
         } = params;
 
         const response = await this.http.put(`/export-processes/${this.id}`, data, {
             query: {
-                ml: lang ? false : ml,
                 /* [UGC update-query] */
                 /* [/UGC] */
             },
             headers: {
-                'Accept-Language': lang,
                 /* [UGC update-headers] */
                 /* [/UGC] */
             },

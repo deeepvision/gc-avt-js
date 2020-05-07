@@ -129,6 +129,7 @@
       "title": "Question",
       "additionalProperties": false,
       "x-pcg": {
+        "multilang": "none",
         "rest-alias": "questions",
         "pagination": true,
         "sort": {
@@ -232,7 +233,7 @@
       "title": "Translation",
       "additionalProperties": false,
       "x-pcg": {
-        "multilang": false,
+        "multilang": "none",
         "rest-alias": "translations",
         "pagination": true,
         "sort": {
@@ -354,6 +355,25 @@
           "x-pcg": {
             "filterable": true
           }
+        },
+        "bible": {
+          "type": "object",
+          "properties": {
+            "id": {
+              "type": "string",
+              "minLength": 1,
+              "example": "KJV"
+            },
+            "yvid": {
+              "type": "string",
+              "example": "100",
+              "minLength": 1
+            },
+            "available": {
+              "type": "boolean",
+              "example": true
+            }
+          }
         }
       },
       "required": [
@@ -366,7 +386,7 @@
       "title": "Session",
       "additionalProperties": false,
       "x-pcg": {
-        "multilang": false,
+        "multilang": "none",
         "rest-alias": "sessions",
         "pagination": true,
         "relations": {
@@ -417,6 +437,20 @@
             "internal": true
           }
         },
+        "totalTranslations": {
+          "type": "number",
+          "minimum": 0,
+          "x-pcg": {
+            "internal": true
+          }
+        },
+        "approvedTranslations": {
+          "type": "number",
+          "minimum": 0,
+          "x-pcg": {
+            "internal": true
+          }
+        },
         "dateCreated": {
           "type": "string",
           "format": "date-time",
@@ -450,6 +484,7 @@
       "title": "Event",
       "additionalProperties": false,
       "x-pcg": {
+        "multilang": "none",
         "rest-alias": "events",
         "pagination": true,
         "sort": {
@@ -517,6 +552,7 @@
       "title": "Export Process",
       "additionalProperties": false,
       "x-pcg": {
+        "multilang": "none",
         "rest-alias": "export-processes",
         "pagination": true,
         "sort": {
@@ -875,6 +911,22 @@
         },
         "active": {
           "type": "boolean"
+        },
+        "bible": {
+          "type": "object",
+          "properties": {
+            "id": {
+              "type": "string",
+              "minLength": 1
+            },
+            "yvid": {
+              "type": "string",
+              "minLength": 1
+            },
+            "available": {
+              "type": "boolean"
+            }
+          }
         }
       },
       "required": [
@@ -900,6 +952,22 @@
         },
         "active": {
           "type": "boolean"
+        },
+        "bible": {
+          "type": "object",
+          "properties": {
+            "id": {
+              "type": "string",
+              "minLength": 1
+            },
+            "yvid": {
+              "type": "string",
+              "minLength": 1
+            },
+            "available": {
+              "type": "boolean"
+            }
+          }
         }
       }
     },
@@ -1337,9 +1405,9 @@
         "parameters": [
           {
             "in": "query",
-            "name": "relations",
-            "type": "boolean",
-            "default": true
+            "name": "rel",
+            "type": "string",
+            "default": "all"
           }
         ],
         "responses": {
@@ -1377,9 +1445,9 @@
           },
           {
             "in": "query",
-            "name": "relations",
-            "type": "boolean",
-            "default": true
+            "name": "rel",
+            "type": "string",
+            "default": "all"
           }
         ],
         "responses": {
@@ -1496,9 +1564,9 @@
         "parameters": [
           {
             "in": "query",
-            "name": "relations",
-            "type": "boolean",
-            "default": false
+            "name": "rel",
+            "type": "string",
+            "default": "none"
           },
           {
             "$ref": "#/parameters/limit"
@@ -1581,9 +1649,9 @@
           },
           {
             "in": "query",
-            "name": "relations",
-            "type": "boolean",
-            "default": true
+            "name": "rel",
+            "type": "string",
+            "default": "all"
           }
         ],
         "responses": {
@@ -2119,7 +2187,7 @@
             },
             "x-examples": {
               "application/json": {
-                "id": "HQWyJpZCI2",
+                "id": "HQWyJpZCI4",
                 "text": "Some text",
                 "reference": "Some text",
                 "line": 2,
@@ -2179,7 +2247,7 @@
             },
             "x-examples": {
               "application/json": {
-                "id": "HQWyJpZCI1",
+                "id": "HQWyJpZCI5",
                 "text": "Some text",
                 "reference": "Some text",
                 "line": 2,
@@ -2310,12 +2378,17 @@
             },
             "x-examples": {
               "application/json": {
-                "id": "WyJpZCIs2",
+                "id": "WyJpZCIs7",
                 "title": {
                   "en": "English"
                 },
                 "index": 0,
-                "active": false
+                "active": false,
+                "bible": {
+                  "id": "KJV",
+                  "yvid": "100",
+                  "available": true
+                }
               }
             }
           },
@@ -2389,7 +2462,8 @@
             "type": "string",
             "default": "index.asc",
             "enum": [
-              "index.asc"
+              "index.asc",
+              "index.desc"
             ]
           },
           {
@@ -2455,12 +2529,17 @@
             },
             "x-examples": {
               "application/json": {
-                "id": "WyJpZCIs1",
+                "id": "WyJpZCIs6",
                 "title": {
                   "en": "English"
                 },
                 "index": 0,
-                "active": false
+                "active": false,
+                "bible": {
+                  "id": "KJV",
+                  "yvid": "100",
+                  "available": true
+                }
               }
             }
           },
@@ -2504,7 +2583,7 @@
             "name": "body",
             "schema": {
               "type": "object",
-              "minProperties": 2
+              "minProperties": 1
             }
           }
         ],
@@ -2518,7 +2597,7 @@
                   "type": "string"
                 },
                 "meta": {
-                  "minProperties": 2
+                  "minProperties": 1
                 }
               },
               "required": [
@@ -2543,9 +2622,9 @@
         "parameters": [
           {
             "in": "query",
-            "name": "relations",
-            "type": "boolean",
-            "default": true
+            "name": "rel",
+            "type": "string",
+            "default": "all"
           }
         ],
         "responses": {
@@ -2585,9 +2664,9 @@
           },
           {
             "in": "query",
-            "name": "relations",
-            "type": "boolean",
-            "default": true
+            "name": "rel",
+            "type": "string",
+            "default": "all"
           }
         ],
         "responses": {
@@ -2638,9 +2717,9 @@
         "parameters": [
           {
             "in": "query",
-            "name": "relations",
-            "type": "boolean",
-            "default": false
+            "name": "rel",
+            "type": "string",
+            "default": "none"
           },
           {
             "$ref": "#/parameters/limit"
@@ -2732,9 +2811,9 @@
           },
           {
             "in": "query",
-            "name": "relations",
-            "type": "boolean",
-            "default": true
+            "name": "rel",
+            "type": "string",
+            "default": "all"
           }
         ],
         "responses": {

@@ -2,7 +2,7 @@ stages:
   - test
   - publish
 
-image: node:10-alpine
+image: node:12-alpine
 before_script:
   - node -v
   - npm -v

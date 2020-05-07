@@ -33,20 +33,16 @@ export default class QuestionController {
 
     public async get(input: QuestionGetInput = {}): Promise<Question> {
         const {
-            ml,
-            lang,
             /* [UGC get-input] */
             /* [/UGC] */
         } = input;
 
         const response = await this.http.get(`/questions/${this.id}`, {
             query: {
-                ml,
                 /* [UGC get-query] */
                 /* [/UGC] */
             },
             headers: {
-                'Accept-Language': lang,
                 /* [UGC get-headers] */
                 /* [/UGC] */
             },
@@ -61,20 +57,16 @@ export default class QuestionController {
         }
 
         const {
-            ml,
-            lang,
             /* [UGC update-params] */
             /* [/UGC] */
         } = params;
 
         const response = await this.http.put(`/questions/${this.id}`, data, {
             query: {
-                ml: lang ? false : ml,
                 /* [UGC update-query] */
                 /* [/UGC] */
             },
             headers: {
-                'Accept-Language': lang,
                 /* [UGC update-headers] */
                 /* [/UGC] */
             },

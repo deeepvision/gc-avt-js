@@ -47,8 +47,6 @@ export interface QuestionUpdateInput extends BaseQuestionUpdateInput {
 }
 
 export interface QueryParams {
-    ml?: boolean;
-    lang?: string;
 }
 
 export interface QuestionGetInput extends QueryParams {
@@ -61,7 +59,6 @@ export interface QuestionListQuery {
     offset?: number;
     sort?: string;
     text?: string;
-    ml?: boolean;
     ids?: string;
     exclude?: string;
     /* [UGC list-query] */
@@ -69,7 +66,6 @@ export interface QuestionListQuery {
 }
 
 export interface QuestionListInput extends QuestionListQuery {
-    lang?: string;
 }
 
 export interface QuestionList {

@@ -48,11 +48,9 @@ export default class {
             offset = 0,
             sort,
             text,
-            lang,
-            ml,
             ids,
             exclude,
-            relations,
+            rel,
             name,
             user,
             /* [UGC list-input] */
@@ -62,8 +60,7 @@ export default class {
         const query: EventListQuery = {
             sort,
             text,
-            ml,
-            relations,
+            rel,
             name,
             user,
             /* [UGC list-query] */
@@ -84,7 +81,6 @@ export default class {
         const response = await this.http.get('/events', {
             query,
             headers: {
-                'Accept-Language': lang,
                 /* [UGC list-headers] */
                 /* [/UGC] */
             },
@@ -99,22 +95,18 @@ export default class {
         }
 
         const {
-            ml,
-            lang,
-            relations,
+            rel,
             /* [UGC create-params] */
             /* [/UGC] */
         } = params;
 
         const response = await this.http.post('/events', data, {
             query: {
-                ml: lang ? false : ml,
-                relations,
+                rel,
                 /* [UGC create-query] */
                 /* [/UGC] */
             },
             headers: {
-                'Accept-Language': lang,
                 /* [UGC create-headers] */
                 /* [/UGC] */
             },

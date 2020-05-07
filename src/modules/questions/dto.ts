@@ -33,8 +33,6 @@ export interface QuestionUpdateInput extends BaseQuestionUpdateInput {
 }
 
 export interface QueryParams {
-    ml?: boolean;
-    lang?: string;
 }
 
 export interface QuestionGetInput extends QueryParams {

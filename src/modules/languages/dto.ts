@@ -5,6 +5,7 @@ export interface BaseLanguage {
     title: object;
     index?: number;
     active?: boolean;
+    bible?: object;
 }
 
 export interface BaseLanguageInput {
@@ -12,6 +13,7 @@ export interface BaseLanguageInput {
     title: object;
     index?: number;
     active?: boolean;
+    bible?: object;
 }
 
 export interface BaseLanguageUpdateInput {
@@ -19,6 +21,7 @@ export interface BaseLanguageUpdateInput {
     title?: object;
     index?: number;
     active?: boolean;
+    bible?: object;
 }
 
 export interface Language extends BaseLanguage {

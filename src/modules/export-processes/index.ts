@@ -46,8 +46,6 @@ export default class {
             offset = 0,
             sort,
             text,
-            lang,
-            ml,
             ids,
             exclude,
             /* [UGC list-input] */
@@ -57,7 +55,6 @@ export default class {
         const query: ExportProcessListQuery = {
             sort,
             text,
-            ml,
             /* [UGC list-query] */
             /* [/UGC] */
         };
@@ -76,7 +73,6 @@ export default class {
         const response = await this.http.get('/export-processes', {
             query,
             headers: {
-                'Accept-Language': lang,
                 /* [UGC list-headers] */
                 /* [/UGC] */
             },
@@ -91,20 +87,16 @@ export default class {
         }
 
         const {
-            ml,
-            lang,
             /* [UGC create-params] */
             /* [/UGC] */
         } = params;
 
         const response = await this.http.post('/export-processes', data, {
             query: {
-                ml: lang ? false : ml,
                 /* [UGC create-query] */
                 /* [/UGC] */
             },
             headers: {
-                'Accept-Language': lang,
                 /* [UGC create-headers] */
                 /* [/UGC] */
             },

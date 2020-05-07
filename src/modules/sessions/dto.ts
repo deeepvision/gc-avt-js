@@ -6,6 +6,8 @@ export interface BaseSession {
     language?: string;
     progress?: object;
     votedQuestions?: Array<string>;
+    totalTranslations?: number;
+    approvedTranslations?: number;
     dateCreated?: string;
     user?: object;
     questions?: Array<object>;
@@ -39,7 +41,7 @@ export interface SessionUpdateInput extends BaseSessionUpdateInput {
 }
 
 export interface QueryParams {
-    relations?: boolean;
+    rel?: string;
 }
 
 export interface SessionGetInput extends QueryParams {
@@ -54,7 +56,7 @@ export interface SessionListQuery {
     text?: string;
     ids?: string;
     exclude?: string;
-    relations?: boolean;
+    rel?: string;
     finished?: string;
     user?: string;
     /* [UGC list-query] */

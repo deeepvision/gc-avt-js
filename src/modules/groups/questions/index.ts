@@ -2,6 +2,7 @@
 import { HttpClient } from '@deepvision/http-client';
 import {
     APIError,
+    ID,
     parseResponse,
 } from '@deepvision/api-kit';
 /* [UGC import] */
@@ -21,11 +22,11 @@ import {
 
 export default class {
     private readonly http: HttpClient;
-    private readonly groupId: string;
+    private readonly groupId: ID;
     /* [UGC declaration] */
     /* [/UGC] */
 
-    constructor(http: HttpClient, groupId: string) {
+    constructor(http: HttpClient, groupId: ID) {
         this.http = http;
         this.groupId = groupId;
         /* [UGC constructor] */
@@ -38,8 +39,6 @@ export default class {
             offset = 0,
             sort,
             text,
-            ml,
-            lang,
             ids,
             exclude,
             /* [UGC list-input] */
@@ -49,7 +48,6 @@ export default class {
         const query: QuestionListQuery = {
             sort,
             text,
-            ml,
             /* [UGC list-query] */
             /* [/UGC] */
         };
@@ -68,7 +66,6 @@ export default class {
         const response = await this.http.get(`/groups/${this.groupId}/questions`, {
             query,
             headers: {
-                'Accept-Language': lang,
                 /* [UGC list-headers] */
                 /* [/UGC] */
             },
@@ -83,20 +80,16 @@ export default class {
         }
 
         const {
-            ml,
-            lang,
             /* [UGC create-params] */
             /* [/UGC] */
         } = params;
 
         const response = await this.http.post(`/groups/${this.groupId}/questions`, data, {
             query: {
-                ml: lang ? false : ml,
                 /* [UGC create-query] */
                 /* [/UGC] */
             },
             headers: {
-                'Accept-Language': lang,
                 /* [UGC create-headers] */
                 /* [/UGC] */
             },

@@ -2,6 +2,7 @@
 import { HttpClient } from '@deepvision/http-client';
 import {
     APIError,
+    ID,
     parseResponse,
 } from '@deepvision/api-kit';
 /* [UGC import] */
@@ -21,11 +22,11 @@ import {
 
 export default class {
     private readonly http: HttpClient;
-    private readonly projectId: string;
+    private readonly projectId: ID;
     /* [UGC declaration] */
     /* [/UGC] */
 
-    constructor(http: HttpClient, projectId: string) {
+    constructor(http: HttpClient, projectId: ID) {
         this.http = http;
         this.projectId = projectId;
         /* [UGC constructor] */

@@ -32,22 +32,18 @@ export default class EventController {
 
     public async get(input: EventGetInput = {}): Promise<Event> {
         const {
-            ml,
-            lang,
-            relations,
+            rel,
             /* [UGC get-input] */
             /* [/UGC] */
         } = input;
 
         const response = await this.http.get(`/events/${this.id}`, {
             query: {
-                ml,
-                relations,
+                rel,
                 /* [UGC get-query] */
                 /* [/UGC] */
             },
             headers: {
-                'Accept-Language': lang,
                 /* [UGC get-headers] */
                 /* [/UGC] */
             },
@@ -62,22 +58,18 @@ export default class EventController {
         }
 
         const {
-            ml,
-            lang,
-            relations,
+            rel,
             /* [UGC update-params] */
             /* [/UGC] */
         } = params;
 
         const response = await this.http.put(`/events/${this.id}`, data, {
             query: {
-                ml: lang ? false : ml,
-                relations,
+                rel,
                 /* [UGC update-query] */
                 /* [/UGC] */
             },
             headers: {
-                'Accept-Language': lang,
                 /* [UGC update-headers] */
                 /* [/UGC] */
             },

@@ -32,14 +32,14 @@ export default class SessionController {
 
     public async get(input: SessionGetInput = {}): Promise<Session> {
         const {
-            relations,
+            rel,
             /* [UGC get-input] */
             /* [/UGC] */
         } = input;
 
         const response = await this.http.get(`/sessions/${this.id}`, {
             query: {
-                relations,
+                rel,
                 /* [UGC get-query] */
                 /* [/UGC] */
             },
@@ -58,14 +58,14 @@ export default class SessionController {
         }
 
         const {
-            relations,
+            rel,
             /* [UGC update-params] */
             /* [/UGC] */
         } = params;
 
         const response = await this.http.put(`/sessions/${this.id}`, data, {
             query: {
-                relations,
+                rel,
                 /* [UGC update-query] */
                 /* [/UGC] */
             },

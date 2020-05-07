@@ -19,8 +19,9 @@
     "fix": "eslint --fix ./src/**/**/*.ts"
   },
   "dependencies": {
+    "@deepvision/api-kit": "^1.1.5",
     "@deepvision/http-client": "^1.1.4",
-    "@deepvision/api-kit": "^1.0.6"
+    "nock": "^12.0.3"
   },
   "devDependencies": {
     "typescript": "^3.5.3",

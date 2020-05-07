@@ -30,8 +30,6 @@ export interface ExportProcessUpdateInput extends BaseExportProcessUpdateInput {
 }
 
 export interface QueryParams {
-    ml?: boolean;
-    lang?: string;
 }
 
 export interface ExportProcessGetInput extends QueryParams {
@@ -44,7 +42,6 @@ export interface ExportProcessListQuery {
     offset?: number;
     sort?: string;
     text?: string;
-    ml?: boolean;
     ids?: string;
     exclude?: string;
     /* [UGC list-query] */
@@ -52,7 +49,6 @@ export interface ExportProcessListQuery {
 }
 
 export interface ExportProcessListInput extends ExportProcessListQuery {
-    lang?: string;
 }
 
 export interface ExportProcessList {

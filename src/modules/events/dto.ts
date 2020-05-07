@@ -36,9 +36,7 @@ export interface EventUpdateInput extends BaseEventUpdateInput {
 }
 
 export interface QueryParams {
-    ml?: boolean;
-    lang?: string;
-    relations?: boolean;
+    rel?: string;
 }
 
 export interface EventGetInput extends QueryParams {
@@ -51,10 +49,9 @@ export interface EventListQuery {
     offset?: number;
     sort?: string;
     text?: string;
-    ml?: boolean;
     ids?: string;
     exclude?: string;
-    relations?: boolean;
+    rel?: string;
     name?: string;
     user?: string;
     /* [UGC list-query] */
@@ -62,7 +59,6 @@ export interface EventListQuery {
 }
 
 export interface EventListInput extends EventListQuery {
-    lang?: string;
 }
 
 export interface EventList {

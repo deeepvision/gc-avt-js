@@ -51,7 +51,7 @@ export default class {
             text,
             ids,
             exclude,
-            relations,
+            rel,
             finished,
             user,
             /* [UGC list-input] */
@@ -61,7 +61,7 @@ export default class {
         const query: SessionListQuery = {
             sort,
             text,
-            relations,
+            rel,
             finished,
             user,
             /* [UGC list-query] */
@@ -96,14 +96,14 @@ export default class {
         }
 
         const {
-            relations,
+            rel,
             /* [UGC create-params] */
             /* [/UGC] */
         } = params;
 
         const response = await this.http.post('/sessions', data, {
             query: {
-                relations,
+                rel,
                 /* [UGC create-query] */
                 /* [/UGC] */
             },
