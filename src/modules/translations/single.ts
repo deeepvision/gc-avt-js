@@ -88,5 +88,11 @@ export default class TranslationController {
 
         return parseResponse(response);
     }
+
+    public async revertApprove(): Promise<ApproveResult> {
+        const response = await this.http.get(`/translations/${this.id}/revert-approve`);
+
+        return parseResponse(response);
+    }
     /* [/UGC] */
 }
