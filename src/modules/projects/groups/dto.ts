@@ -3,16 +3,19 @@
 export interface BaseGroup {
     id: string;
     name: object;
+    published?: boolean;
     projectId?: string;
     statistic?: object;
 }
 
 export interface BaseGroupInput {
     name: object;
+    published?: boolean;
 }
 
 export interface BaseGroupUpdateInput {
     name?: object;
+    published?: boolean;
 }
 
 export interface Group extends BaseGroup {
@@ -48,6 +51,7 @@ export interface GroupListQuery {
     ml?: boolean;
     ids?: string;
     exclude?: string;
+    published?: string;
     /* [UGC list-query] */
     /* [/UGC] */
 }

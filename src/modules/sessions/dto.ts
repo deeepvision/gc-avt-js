@@ -5,7 +5,7 @@ export interface BaseSession {
     finished?: boolean;
     language?: string;
     progress?: object;
-    votedQuestions?: Array<string>;
+    votedQuestions?: Array<object>;
     totalTranslations?: number;
     approvedTranslations?: number;
     dateCreated?: string;

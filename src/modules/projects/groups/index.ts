@@ -43,6 +43,7 @@ export default class {
             lang,
             ids,
             exclude,
+            published,
             /* [UGC list-input] */
             /* [/UGC] */
         } = input;
@@ -51,6 +52,7 @@ export default class {
             sort,
             text,
             ml,
+            published,
             /* [UGC list-query] */
             /* [/UGC] */
         };
