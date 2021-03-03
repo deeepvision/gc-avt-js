@@ -2010,7 +2010,7 @@
             "type": "integer",
             "default": 10,
             "maximum": 1000,
-            "minimum": 10
+            "minimum": 1
           }
         ],
         "responses": {
@@ -2251,7 +2251,7 @@
             "type": "integer",
             "default": 10,
             "maximum": 1000,
-            "minimum": 10
+            "minimum": 1
           }
         ],
         "responses": {
