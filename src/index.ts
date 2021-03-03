@@ -1,5 +1,5 @@
-import HttpClient from '@deepvision/http-client';
-import { APIError, Webhooks } from '@deepvision/api-kit';
+import HttpClient from '@deeepvision/http-client';
+import { APIError, Webhooks } from '@deeepvision/api-kit';
 import * as Modules from './modules';
 /* [UGC import] */
 /* [/UGC] */

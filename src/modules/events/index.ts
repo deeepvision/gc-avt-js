@@ -1,10 +1,10 @@
 /* eslint-disable no-unused-vars, @typescript-eslint/no-unused-vars, max-len */
-import { HttpClient } from '@deepvision/http-client';
+import { HttpClient } from '@deeepvision/http-client';
 import {
     APIError,
     parseResponse,
     ID,
-} from '@deepvision/api-kit';
+} from '@deeepvision/api-kit';
 /* [UGC import] */
 /* [/UGC] */
 
@@ -124,7 +124,7 @@ export default class {
     }
 
     public async getGroupsActivity(query: GroupsActivityQuery = {}): Promise<GroupsActivity> {
-        const response = await this.http.get('/events/activity/groups',{
+        const response = await this.http.get('/events/activity/groups', {
             query,
         });
 
