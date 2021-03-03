@@ -54,6 +54,7 @@ export interface GroupListQuery {
     published?: string;
     /* [UGC list-query] */
     statistic?: string;
+    language?: string;
     /* [/UGC] */
 }
 

@@ -46,6 +46,7 @@ export default class {
             published,
             /* [UGC list-input] */
             statistic,
+            language,
             /* [/UGC] */
         } = input;
 
@@ -56,6 +57,7 @@ export default class {
             published,
             /* [UGC list-query] */
             statistic,
+            language,
             /* [/UGC] */
         };
 
