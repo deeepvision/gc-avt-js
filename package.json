@@ -19,21 +19,21 @@
     "fix": "eslint --fix ./src/**/**/*.ts"
   },
   "dependencies": {
-    "@deepvision/api-kit": "^1.1.5",
-    "@deepvision/http-client": "^1.1.4",
+    "@deeepvision/api-kit": "^1.1.7",
+    "@deeepvision/http-client": "^1.1.6",
     "nock": "^12.0.3"
   },
   "devDependencies": {
-    "typescript": "^3.5.3",
-    "@types/node": "^12.6.8",
+    "@deeepvision/test-kit-jest": "^1.0.6",
+    "@deeepvision/eslint-config": "^6.6.7",
     "@types/jest": "^24.0.15",
-    "@deepvision/test-kit-jest": "^1.0.6",
+    "@types/node": "^12.6.8",
+    "@typescript-eslint/eslint-plugin": "^2.0.0",
+    "@typescript-eslint/parser": "^2.0.0",
+    "eslint": "^6.1.0",
     "jest": "^24.8.0",
     "ts-jest": "^24.0.2",
-    "eslint": "^6.1.0",
-    "@deepvision/eslint-config": "^6.1.9",
-    "@typescript-eslint/parser": "^2.0.0",
-    "@typescript-eslint/eslint-plugin": "^2.0.0"
+    "typescript": "^3.5.3"
   },
   "types": "lib/index.d.ts",
   "files": [

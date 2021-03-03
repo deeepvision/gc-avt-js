@@ -1,5 +1,5 @@
-import { APIError } from '@deepvision/api-kit';
-import '@deepvision/test-kit-jest';
+import { APIError } from '@deeepvision/api-kit';
+import '@deeepvision/test-kit-jest';
 import * as nock from 'nock';
 import Translatio from '@/index';
 import Projects from '@/modules/projects';

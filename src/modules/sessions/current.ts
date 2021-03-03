@@ -1,6 +1,6 @@
 /* eslint-disable no-unused-vars, @typescript-eslint/no-unused-vars, max-len */
-import { HttpClient } from '@deepvision/http-client';
-import { parseResponse } from '@deepvision/api-kit';
+import { HttpClient } from '@deeepvision/http-client';
+import { parseResponse } from '@deeepvision/api-kit';
 
 import {
     Session,

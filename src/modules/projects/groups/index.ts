@@ -1,10 +1,10 @@
 /* eslint-disable no-unused-vars, @typescript-eslint/no-unused-vars, max-len */
-import { HttpClient } from '@deepvision/http-client';
+import { HttpClient } from '@deeepvision/http-client';
 import {
     APIError,
     ID,
     parseResponse,
-} from '@deepvision/api-kit';
+} from '@deeepvision/api-kit';
 /* [UGC import] */
 /* [/UGC] */
 
@@ -45,6 +45,7 @@ export default class {
             exclude,
             published,
             /* [UGC list-input] */
+            statistic,
             /* [/UGC] */
         } = input;
 
@@ -54,6 +55,7 @@ export default class {
             ml,
             published,
             /* [UGC list-query] */
+            statistic,
             /* [/UGC] */
         };
 

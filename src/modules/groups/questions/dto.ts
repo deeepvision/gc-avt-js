@@ -62,10 +62,12 @@ export interface QuestionListQuery {
     ids?: string;
     exclude?: string;
     /* [UGC list-query] */
+    statistic?: string;
     /* [/UGC] */
 }
 
 export interface QuestionListInput extends QuestionListQuery {
+    statistic?: string;
 }
 
 export interface QuestionList {

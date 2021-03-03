@@ -53,11 +53,13 @@ export interface GroupListQuery {
     exclude?: string;
     published?: string;
     /* [UGC list-query] */
+    statistic?: string;
     /* [/UGC] */
 }
 
 export interface GroupListInput extends GroupListQuery {
     lang?: string;
+    statistic?: string;
 }
 
 export interface GroupList {
