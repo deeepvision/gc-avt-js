@@ -91,4 +91,8 @@ export interface GroupsActivity {
         total: number;
     };
 }
+
+export interface GroupsActivityQuery {
+    user?: string;
+}
 /* [/UGC] */

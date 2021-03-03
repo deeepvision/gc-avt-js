@@ -18,6 +18,7 @@ import {
     /* [UGC dto-import] */
     Statistic,
     GroupsActivity,
+    GroupsActivityQuery,
     /* [/UGC] */
 } from './dto';
 
@@ -122,8 +123,10 @@ export default class {
         return parseResponse(response);
     }
 
-    public async getGroupsActivity(): Promise<GroupsActivity> {
-        const response = await this.http.get('/events/activity/groups');
+    public async getGroupsActivity(query: GroupsActivityQuery = {}): Promise<GroupsActivity> {
+        const response = await this.http.get('/events/activity/groups',{
+            query,
+        });
 
         return parseResponse(response);
     }
