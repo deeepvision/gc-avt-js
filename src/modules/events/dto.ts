@@ -94,5 +94,6 @@ export interface GroupsActivity {
 
 export interface GroupsActivityQuery {
     user?: string;
+    language?: string;
 }
 /* [/UGC] */
